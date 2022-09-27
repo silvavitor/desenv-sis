@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>Editar - Usu�rio</title>
+    <title>Nova operação</title>
 
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">    
     <!-- Custom styles for this template -->
@@ -18,7 +18,7 @@
       }
     </style>
   </head>
-<body class="text-center bg-light"> 
+<body class="text-center bg-light bodycss"> 
   <nav class="navbar navbar-expand-lg navbar-light bg-light px-5">
       
     <div class="container-fluid">
@@ -46,62 +46,35 @@
   </nav>    
   <main class="form-signin w-100 m-auto">
     <form>
-      <h1 class="h3 mt-3 mb-3 fw-normal">Alterar dados</h1>
+      <h1 class="h3 mt-3 mb-3 fw-normal">Inserir operação</h1>
       
-      <div class="container">
-        <!-- 
-          Nome e sobrenome 
-        -->
+      <div class="container"> 
         <div class="row mb-3">
-          <div class="form-floating  col">        
-            <input type="text" class="form-control" id="nome" placeholder="Nome">
-            <label for="nome">Nome</label>
+          <div class="form-floating col">        
+            <select id="lado" class="form-select pt-2" aria-label="Default select example">
+              <option selected value="1">Compra</option>
+              <option value="2">Venda</option>
+            </select>
+          </div>
+        </div>        
+        <div class="row mb-3">
+          <div class="form-floating col">        
+            <select id="acao" class="form-select pt-2" aria-label="Default select example">
+              <option selected value="1">PETR4</option>
+              <option value="2">VALE3</option>
+            </select>
+          </div>
+        </div>        
+        <div class="row mb-3">
+          <div class="form-floating col">        
+            <input type="number" class="form-control" id="quantidade" placeholder="Quantidade">
+            <label for="quantidade">Quantidade</label>
           </div>
           &nbsp&nbsp
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="sobrenome" placeholder="Sobrenome">
-            <label for="sobrenome">Sobrenome</label>
-          </div>
         </div>
-        <!-- 
-          RG e CPF 
-        -->
         <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="rg" placeholder="rg">
-            <label for="rg">RG</label>
-          </div>
-          &nbsp&nbsp
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="cpf" placeholder="cpf">
-            <label for="cpf">CPF</label>
-          </div>
-        </div>
-        <!-- 
-          Endere�o e Celular
-        -->
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="endereco" placeholder="endereco">
-            <label for="endereco">Endereco Completo</label>
-          </div>
-          &nbsp&nbsp
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="celular" placeholder="celular">
-            <label for="celular">Celular</label>
-          </div>
-        </div>
-        <!-- 
-          Email e Senha
-        -->
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="email" placeholder="email">
-            <label for="email">E-mail</label>
-          </div>
         </div>
       </div>
-      <a class="w-100 mb-5 btn btn-lg btn-link" href="alterar-senha.html">Alterar senha</a>
       <button class="w-100 btn btn-lg btn-success" type="submit">Confirmar</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     </form>
