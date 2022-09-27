@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>Home - ADS Carteiras</title>
+    <title>Cadastrar - Token - ADS Carteiras</title>
 
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sign-in/">
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">    
     <!-- Custom styles for this template -->
-    <!-- <link href="home.css" rel="stylesheet"> -->
+    <link href="signin.css" rel="stylesheet">
   </head>
   <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-light bg-light px-5">
@@ -35,38 +36,22 @@
           </div>
         </div>
       </div>
-    </nav> 
-    <main class="mx-5">
-      <div class="container mt-5 w-75">
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <button class="w-100 row mb-3 btn btn-lg btn-primary">Criar carteira</button>
-          </div>
-        </div>
+    </nav>    
+<main class="form-signin w-100 m-auto">
+  <form>
+    <div class="form-container">
+      <div class="form-floating">        
+        <input type="text" class="form-control" id="descricao" placeholder="descricao">
+        <label for="descricao">Descrição da nova carteira</label>
       </div>
-      <div class="row align-items-md-stretch">
-        <div class="col-md-4">
-          <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
-            <h5>Carteira A</h5>
-            <p>Valor Total: R$ 1234.56</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
-            <h5>Carteira A</h5>
-            <p>Valor Total: R$ 1234.56</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
-            <h5>Carteira A</h5>
-            <p>Valor Total: R$ 1234.56</p>
-          </div>
-        </div>
-        
-      </div>
-    </main>
+    </div>
 
-    <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+    <button class="w-100 btn btn-lg btn-success" type="submit">Cadastrar carteira</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
+  </form>
+</main>
+
+
+<script src="assets/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

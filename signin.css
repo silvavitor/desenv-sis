@@ -54,7 +54,7 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-body {
+.bodycss {
   display: flex;
   align-items: center;
   padding-top: 40px;
@@ -85,5 +85,9 @@ body {
 
 .form-container {
   margin-bottom: 20px;
+}
+
+nav {
+  display: block;
 }
 
