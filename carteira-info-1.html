@@ -10,6 +10,11 @@
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">    
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
+    <style>
+      .form-signin {
+        max-width: 500px;
+      }
+    </style>
   </head>
   <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-light bg-light px-5">
@@ -39,14 +44,19 @@
     </nav>    
 <main class="form-signin w-100 m-auto">
   <form>
+    <h1 class="h3 mb-3 fw-normal">Insira os dados da carteira</h1>
     <div class="form-container">
-      <div class="form-floating">        
+      <div class="form-floating mb-2">        
         <input type="text" class="form-control" id="descricao" placeholder="descricao">
         <label for="descricao">Descrição da nova carteira</label>
       </div>
+      <div class="form-floating">        
+        <input type="text" class="form-control" id="qtdacoes" placeholder="qtdacoes">
+        <label for="qtdacoes">Quantidade de ações dessa carteira</label>
+      </div>
     </div>
 
-    <button class="w-100 btn btn-lg btn-success" type="submit">Cadastrar carteira</button>
+    <button class="w-100 btn btn-lg btn-success" type="submit">Próximo</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
   </form>
 </main>
