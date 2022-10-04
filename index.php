@@ -1,3 +1,16 @@
+<?php
+  require_once("./banco.php");
+  var_dump($mysqli);
+
+  $email = $_POST["email"];
+  $senha = $_POST["password"];
+
+  $query = mysqli_query($mysqli, 
+    "SELECT id 
+     FROM clientes
+     WHERE email='$email' AND senha='$senha'"
+  );
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,15 +27,15 @@
   <body class="text-center bg-light bodycss">
     
 <main class="form-signin w-100 m-auto">
-  <form>
+  <form action="index.php" method="post">
     <img class="mb-4" src="assets/ifrs.png" alt="" width="75" height="80">
     <div class="form-container">
       <div class="form-floating">
-        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+        <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
         <label for="email">Endereço de e-mail</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="senha" placeholder="Password">
+        <input type="password" class="form-control" id="senha" placeholder="Password" name="password">
         <label for="senha">Senha</label>
       </div>
     </div>
