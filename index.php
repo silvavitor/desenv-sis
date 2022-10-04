@@ -1,15 +1,22 @@
 <?php
   require_once("./banco.php");
-  var_dump($mysqli);
 
   $email = $_POST["email"];
   $senha = $_POST["password"];
 
   $query = mysqli_query($mysqli, 
     "SELECT id 
-     FROM clientes
+     FROM usuario
      WHERE email='$email' AND senha='$senha'"
   );
+  
+  if ($query && ($result = mysqli_fetch_assoc($query))) {
+    
+  } else {
+    
+  }
+
+  var_dump($result['id']);
 ?>
 <!doctype html>
 <html lang="en">
