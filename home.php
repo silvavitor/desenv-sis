@@ -16,7 +16,9 @@
       <div class="container mt-5 w-75">
         <div class="row mb-3">
           <div class="form-floating col">        
-            <button class="w-100 row mb-3 btn btn-lg btn-primary">Criar carteira</button>
+            <a href="carteira-info-1.php">
+              <button class="w-100 row mb-3 btn btn-lg btn-primary">Criar carteira</button>
+            </a>  
           </div>
         </div>
       </div>
