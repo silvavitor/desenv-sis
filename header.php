@@ -14,8 +14,8 @@
               Perfil
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="user-edit.html">Alterar perfil</a></li>
-              <li><a class="dropdown-item" href="alterar-senha.html">Alterar senha</a></li>
+              <li><a class="dropdown-item" href="user-edit.php">Alterar perfil</a></li>
+              <li><a class="dropdown-item" href="alterar-senha.php">Alterar senha</a></li>
             </ul>
         </ul>
       </div>

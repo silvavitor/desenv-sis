@@ -1,22 +1,22 @@
 <?php
-  require_once("./banco.php");
+  // require_once("./banco.php");
 
-  $email = $_POST["email"];
-  $senha = $_POST["password"];
+  // $email = $_POST["email"];
+  // $senha = $_POST["password"];
 
-  $query = mysqli_query($mysqli, 
-    "SELECT id 
-     FROM usuario
-     WHERE email='$email' AND senha='$senha'"
-  );
+  // $query = mysqli_query($mysqli, 
+  //   "SELECT id 
+  //    FROM usuario
+  //    WHERE email='$email' AND senha='$senha'"
+  // );
   
-  if ($query && ($result = mysqli_fetch_assoc($query))) {
+  // if ($query && ($result = mysqli_fetch_assoc($query))) {
     
-  } else {
+  // } else {
     
-  }
+  // }
 
-  var_dump($result['id']);
+  // var_dump($result['id']);
 ?>
 <!doctype html>
 <html lang="en">
@@ -48,7 +48,7 @@
     </div>
 
     <button class="w-100 btn btn-lg btn-success" type="submit">Entrar</button>
-    <a class="w-100 btn btn-lg btn-link" href="register-token.html">Cadastrar-se</a>
+    <a class="w-100 btn btn-lg btn-link" href="register-token.php">Cadastrar-se</a>
     <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
   </form>
 </main>
