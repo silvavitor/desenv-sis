@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <a href="carteira-info-2.html"><button class="w-100 btn btn-lg btn-success">Próximo</button></a>
+    <a href="carteira-info-2.php"><button class="w-100 btn btn-lg btn-success">Próximo</button></a>
     <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
   </form>
 </main>

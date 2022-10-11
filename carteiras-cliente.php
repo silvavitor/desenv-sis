@@ -30,7 +30,7 @@
     </div>
       <div class="row align-items-md-stretch">
         <div class="col-md-4">    
-          <a href="carteira.html">
+          <a href="carteira.php">
             <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
               <h5>Carteira A</h5>
               <p>Valor Total: R$ 1234.56</p>
@@ -38,7 +38,7 @@
           </a>
         </div>
         <div class="col-md-4">
-          <a href="carteira.html">
+          <a href="carteira.php">
           <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
             <h5>Carteira A</h5>
             <p>Valor Total: R$ 1234.56</p>
@@ -46,7 +46,7 @@
         </a>
         </div>
         <div class="col-md-4">
-          <a href="carteira.html">
+          <a href="carteira.php">
             <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
               <h5>Carteira A</h5>
               <p>Valor Total: R$ 1234.56</p>

@@ -22,8 +22,8 @@
                 <h2>Nome da carteira</h2>
               </div>
               <div class="col-2 d-flex">
-                <a href="carteira-info-1.html" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Editar</button></a>
-                <a href="carteira-excluir.html"><button class="w-100 btn btn-lg btn-danger" type="submit">Excluir</button></a>
+                <a href="carteira-info-1.php" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Editar</button></a>
+                <a href="carteira-excluir.php"><button class="w-100 btn btn-lg btn-danger" type="submit">Excluir</button></a>
               </div>
             </div>
         </div>
@@ -33,15 +33,15 @@
       <div class="w-100 row">
         <div class="h-100 p-5 row">
           <div class="col">
-            <a href="investimento.html" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar investimento</button></a>
+            <a href="investimento.php" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar investimento</button></a>
           </div>
 
           <div class="col">
-            <a href="add-operacao.html" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar operação</button></a>
+            <a href="add-operacao.php" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar operação</button></a>
           </div>
 
           <div class="col">
-            <a href="historico-operacoes.html" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Histórico de operações</button></a>
+            <a href="historico-operacoes.php" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Histórico de operações</button></a>
           </div>
         </div>
       </div>

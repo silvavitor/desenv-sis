@@ -34,12 +34,12 @@
       <div class="container">
         <div class="row mb-3">
           <div class="form-floating  col">        
-            <a href="carteiras-cliente.html" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">1 - Giovani</button></a>
-            <a href="carteiras-cliente.html" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">2 - Vitor </button></a>
-            <a href="carteiras-cliente.html" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">3 - Marisa</button></a>
-            <a href="carteiras-cliente.html" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">4 - Tiago </button></a>
-            <a href="carteiras-cliente.html" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">5 - IF</button></a>
-            <a href="carteiras-cliente.html" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">6 - Cléber</button></a>
+            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">1 - Giovani</button></a>
+            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">2 - Vitor </button></a>
+            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">3 - Marisa</button></a>
+            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">4 - Tiago </button></a>
+            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">5 - IF</button></a>
+            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">6 - Cléber</button></a>
           </div>
         </div>
      </div>

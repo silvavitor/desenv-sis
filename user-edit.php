@@ -77,7 +77,7 @@
           </div>
         </div>
       </div>
-      <a class="w-100 mb-5 btn btn-lg btn-link" href="alterar-senha.html">Alterar senha</a>
+      <a class="w-100 mb-5 btn btn-lg btn-link" href="alterar-senha.php">Alterar senha</a>
       <button class="w-100 btn btn-lg btn-success" type="submit">Confirmar</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     </form>
