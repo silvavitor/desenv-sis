@@ -1,8 +1,13 @@
 <?php
   session_start();
 
-  if (array_key_exists("id", $_SESSION) && $_SESSION['id'] != '') {
-    header('location: home.php');
+  if (array_key_exists("tipo_usuario", $_SESSION) && $_SESSION['tipo_usuario'] != '') {
+    if ($_SESSION['tipo_usuario'] == '2') {
+      header('location: list-clientes.php');
+    }
+    else {
+      header('location: home.php');
+    }
   }
 
   require_once("./banco.php");
@@ -17,10 +22,11 @@
   }
 
   if ($email != '' && $password != '') {
+    $a = "SELECT id, tipo 
+    FROM usuario
+    WHERE email='$email' AND senha='$password'";
     $query = mysqli_query($mysqli, 
-      "SELECT id, tipo 
-       FROM usuario
-       WHERE email='$email' AND senha='$senha'"
+      $a
     );
     
     if ($query && ($result = mysqli_fetch_assoc($query))) {
@@ -30,9 +36,8 @@
       $_SESSION['tipo_usuario'] = $tipo;
       
       // se for analista envia pra list-clientes
-      if ($tipo = 2) {
+      if ($tipo == '2') {
         header('location: list-clientes.php');
-
       // se for cliente envia pra home
       } else {
         header('location: home.php');
