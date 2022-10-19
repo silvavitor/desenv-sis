@@ -11,10 +11,8 @@
   $email             = '';
   $password          = '';
 
-  if (array_key_exists("email", $_POST)) {
-    $email = $_POST["email"];
-  }
-  if (array_key_exists("password", $_POST)) {
+  if ((array_key_exists("email", $_POST)) && (array_key_exists("password", $_POST))) {
+    $email    = $_POST["email"];
     $password = $_POST["password"];
   }
 
