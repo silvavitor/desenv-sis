@@ -1,3 +1,9 @@
+<?php
+
+require_once('session.php');
+
+?>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-5"> 
   <div class="container-fluid">
     <a class="navbar-brand" href="home.php">
