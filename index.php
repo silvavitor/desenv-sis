@@ -1,22 +1,48 @@
 <?php
-  // require_once("./banco.php");
+  session_start();
 
-  // $email = $_POST["email"];
-  // $senha = $_POST["password"];
+  if (array_key_exists("id", $_SESSION) && $_SESSION['id'] != '') {
+    header('location: home.php');
+  }
 
-  // $query = mysqli_query($mysqli, 
-  //   "SELECT id 
-  //    FROM usuario
-  //    WHERE email='$email' AND senha='$senha'"
-  // );
-  
-  // if ($query && ($result = mysqli_fetch_assoc($query))) {
+  require_once("./banco.php");
+
+  $erroNaoEncontrado = false;
+  $email             = '';
+  $password          = '';
+
+  if (array_key_exists("email", $_POST)) {
+    $email = $_POST["email"];
+  }
+  if (array_key_exists("password", $_POST)) {
+    $password = $_POST["password"];
+  }
+
+  if ($email != '' && $password != '') {
+    $query = mysqli_query($mysqli, 
+      "SELECT id, tipo 
+       FROM usuario
+       WHERE email='$email' AND senha='$senha'"
+    );
     
-  // } else {
-    
-  // }
+    if ($query && ($result = mysqli_fetch_assoc($query))) {
+      $tipo = $result['tipo'];
 
-  // var_dump($result['id']);
+      $_SESSION['id'] = $result['id'];
+      $_SESSION['tipo_usuario'] = $tipo;
+      
+      // se for analista envia pra list-clientes
+      if ($tipo = 2) {
+        header('location: list-clientes.php');
+
+      // se for cliente envia pra home
+      } else {
+        header('location: home.php');
+      }
+    } else {
+      $erroNaoEncontrado = true;
+    }
+  }
 ?>
 <!doctype html>
 <html lang="en">
@@ -36,6 +62,12 @@
 <main class="form-signin w-100 m-auto">
   <form action="index.php" method="post">
     <img class="mb-4" src="assets/ifrs.png" alt="" width="75" height="80">
+    <?php if ($erroNaoEncontrado) { ?>
+      <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+        <span>Credenciais incorretas!</span>
+      </div>
+    <?php } ?>
+
     <div class="form-container">
       <div class="form-floating">
         <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
