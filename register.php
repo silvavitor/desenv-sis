@@ -1,9 +1,15 @@
 <?php
+session_start();
+
+if (!(array_key_exists("id_token", $_SESSION) and $_SESSION['id_token'] <> '')) {
+  header('location: register-token.php');
+}
 
 require_once("./banco.php");
 $erroEmailJaExiste = false;
 $erroRGJaExiste = false;
 $erroCamposObrigatorios = false;
+$erroDesconhecido = false;
 $validarCampos = false;
 
 $nome      = '';
@@ -13,6 +19,7 @@ $endereco  = '';
 $celular   = '';
 $email     = '';
 $senha     = '';
+$id_token  = $_SESSION['id_token'];
 
 if ((array_key_exists("nome", $_POST)) && 
     (array_key_exists("sobrenome", $_POST)) &&
@@ -58,9 +65,25 @@ if (($nome      != '') &&
 
   if (!$erroEmailJaExiste && !$erroRGJaExiste) {
     $query = mysqli_query($mysqli, 
-      "INSERT INTO usuario (tipo, nome, sobrenome, rg, endereco, celular, email, senha)
-       VALUES ('1', '$nome', '$sobrenome', '$rg', '$endereco', '$celular', '$email', '$senha')"
+      "INSERT INTO usuario (tipo, nome, sobrenome, rg, endereco, celular, email, senha, id_token)
+       VALUES ('1', '$nome', '$sobrenome', '$rg', '$endereco', '$celular', '$email', '$senha', $id_token)"
     );
+
+    if ($query) {
+      $id = mysqli_insert_id($mysqli);
+      
+      $queryUpdate = mysqli_query($mysqli,
+        "UPDATE token SET usada=NOW() WHERE id=$id_token");
+      
+      $_SESSION['id'] = $id;
+      
+      // limpa a sessao
+      $_SESSION['id_token'] = '';
+
+      header('location: home.php');
+    } else {
+      $erroDesconhecido = true;
+    }
   }
 
 } else {
@@ -100,6 +123,12 @@ if (($nome      != '') &&
       <h1 class="h3 mb-3 fw-normal">Insira seus dados</h1>
       
       <div class="container">
+        <?php if ($erroDesconhecido) { ?>
+          <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+            <span>Erro desconhecido!</span>
+          </div>
+        <?php } ?>
+
         <?php if ($erroCamposObrigatorios) { ?>
           <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
             <span>Preencha todos os campos!</span>

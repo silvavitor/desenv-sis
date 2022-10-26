@@ -1,3 +1,32 @@
+<?php
+session_start();
+
+require_once("./banco.php");
+
+$erroToken = false;
+
+$token     = '';
+
+if (array_key_exists("token", $_POST)) 
+{
+  $token = $_POST["token"];
+
+  $queryToken = mysqli_query($mysqli,
+    "SELECT id FROM token WHERE token='$token' AND usada IS NULL"
+  );
+
+  if ($queryToken && ($result = mysqli_fetch_assoc($queryToken))) {
+    $id = $result['id'];
+
+    $_SESSION['id_token'] = $id;
+
+    header('location: register.php');
+  } else {
+    $erroToken = true;
+  }
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,13 +43,18 @@
   <body class="text-center bg-light bodycss">
     
 <main class="form-signin w-100 m-auto">
-  <form>
+  <form action="register-token.php" method="post">
     <img class="mb-4" src="assets/ifrs.png" alt="" width="75" height="80">
     <div class="form-container">
       <h1 class="h3 mb-3 fw-normal">Insira seu token</h1>
+      <?php if ($erroToken) { ?>
+        <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+          <span>Token inválido!</span>
+        </div>
+      <?php } ?>
       <div class="form-floating">        
-        <input type="text" class="form-control" id="token" placeholder="token">
-        <label for="token">Token - ADS Carteiras</label>
+        <input type="text" class="form-control" id="token" placeholder="token" name="token" >
+        <label for="token">Token</label>
       </div>
     </div>
 
