@@ -6,8 +6,4 @@ if (!array_key_exists("id", $_SESSION)) {
   header('location: index.php');
 }
 
-if (array_key_exists("logout", $_POST)) {
-  session_abort();
-}
-
 ?>

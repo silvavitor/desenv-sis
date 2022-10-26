@@ -22,6 +22,7 @@ require_once('session.php');
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="user-edit.php">Alterar perfil</a></li>
               <li><a class="dropdown-item" href="alterar-senha.php">Alterar senha</a></li>
+              <li><a class="dropdown-item" href="sair.php">Sair</a></li>
             </ul>
         </ul>
       </div>
