@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 04-Out-2022 às 01:32
+-- Tempo de geração: 27-Out-2022 às 02:48
 -- Versão do servidor: 10.4.22-MariaDB
 -- versão do PHP: 8.0.15
 
@@ -34,6 +34,16 @@ CREATE TABLE `token` (
   `usada` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Extraindo dados da tabela `token`
+--
+
+INSERT INTO `token` (`id`, `id_analista`, `token`, `usada`) VALUES
+(1, 1, '123', '2022-10-26'),
+(2, 1, '124', NULL),
+(3, 1, '125', '2022-10-26'),
+(5, 7, '586636', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -50,8 +60,17 @@ CREATE TABLE `usuario` (
   `endereco` varchar(60) NOT NULL,
   `celular` varchar(25) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `senha` varchar(100) NOT NULL
+  `senha` varchar(100) NOT NULL,
+  `id_token` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `tipo`, `nome`, `sobrenome`, `rg`, `cpf`, `endereco`, `celular`, `email`, `senha`, `id_token`) VALUES
+(1, 1, 'VITOR', 'DA SILVA', '3213213213', '', 'asdasddasads', '42142214', 'a@a.com', '1234', 5),
+(7, 2, 'token', 'token', 'token', '', 'token', 'token', 'token@token.com', 'token', 0);
 
 --
 -- Índices para tabelas despejadas
@@ -77,13 +96,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `token`
 --
 ALTER TABLE `token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
