@@ -76,6 +76,7 @@ if (($nome      != '') &&
         "UPDATE token SET usada=NOW() WHERE id=$id_token");
       
       $_SESSION['id'] = $id;
+      $_SESSION['tipo_usuario'] = '1';
       
       // limpa a sessao
       $_SESSION['id_token'] = '';

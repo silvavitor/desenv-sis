@@ -1,3 +1,21 @@
+<?php
+
+require_once('session-analista.php');
+require_once('banco.php');
+
+$token = '';
+$id_analista = $_SESSION['id'];
+
+if (array_key_exists("token", $_POST)) {
+  $token = "" . rand(100000, 999999);
+  $query = mysqli_query($mysqli, 
+      "INSERT INTO token (id_analista, token)
+       VALUES ('$id_analista', '$token')"
+    );
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -23,9 +41,14 @@
   <main class="text-center form-signin w-100 m-auto">
       <div class="container mt-5">
         <div class="row mb-3">
-          <div class="form-floating  col">        
-            <button class="w-100 row mb-3 btn btn-lg btn-primary">Gerar novo token</button>
-            <p><h6>Token: h7q8grh</h6></p>
+          <div class="form-floating col">   
+            <form action="list-clientes.php" method="post">
+              <input type="hidden" name="token">    
+              <button class="w-100 row mb-3 btn btn-lg btn-primary" type="submit">Gerar novo token</button>
+              <?php if ($token <> '') { ?>
+                <p><h6>Token: <?=$token?></h6></p>
+              <?php } ?>
+            </form> 
           </div>
         </div>
      </div>
@@ -33,13 +56,21 @@
       
       <div class="container">
         <div class="row mb-3">
-          <div class="form-floating  col">        
-            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">1 - Giovani</button></a>
-            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">2 - Vitor </button></a>
-            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">3 - Marisa</button></a>
-            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">4 - Tiago </button></a>
-            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">5 - IF</button></a>
-            <a href="carteiras-cliente.php" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success">6 - Cléber</button></a>
+          <div class="form-floating  col"> 
+            <?php 
+            $queryClientes = mysqli_query($mysqli,
+              "SELECT id, nome FROM usuario WHERE id_token in (SELECT id from token WHERE id_analista=$id_analista)"
+            );
+            
+            if ($queryClientes && mysqli_num_rows($queryClientes) > 0) {
+              while ($result = mysqli_fetch_assoc($queryClientes)) {
+                $id = $result['id'];
+                $nome = $result['nome'];
+            ?>       
+              <a href="carteiras-cliente.php?id=<?=$id?>" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success"><?=$nome?></button></a>
+            <?php } } else { ?>
+              <p>Nenhum cliente encontrado!</p>
+            <?php } ?>
           </div>
         </div>
      </div>

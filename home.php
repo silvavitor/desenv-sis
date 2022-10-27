@@ -1,3 +1,9 @@
+<?php
+
+require_once('session-cliente.php');
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
