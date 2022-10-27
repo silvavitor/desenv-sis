@@ -76,29 +76,28 @@ $queryToken = mysqli_query($mysqli,
         </div>
     </div>
       <div class="row align-items-md-stretch">
-        <div class="col-md-4">    
-          <a href="carteira.php">
-            <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
-              <h5>Carteira A</h5>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a href="carteira.php">
-          <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
-            <h5>Carteira A</h5>
-            <p>Valor Total: R$ 1234.56</p>
+        
+        <?php 
+          $queryCarteiras = mysqli_query($mysqli, "SELECT * FROM carteira WHERE id_cliente='$id_cliente'");
+          
+          if ($queryCarteiras && mysqli_num_rows($queryCarteiras) > 0) {
+            while ($result = mysqli_fetch_assoc($queryCarteiras)) {
+              $id = $result['id'];
+              $descricao = $result['descricao']; ?>     
+              
+              <div class="col-md-4 mt-5">    
+                <a href="carteira.php?id=<?=$id?>">
+                  <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
+                  <h5><?=$descricao?></h5>
+                  </div>
+                </a>
+              </div>
+              
+        <?php } } else { ?>
+          <div class="text-center w-100 m-auto">
+            <p>Nenhuma carteira encontrada!</p>
           </div>
-        </a>
-        </div>
-        <div class="col-md-4">
-          <a href="carteira.php">
-            <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3">
-              <h5>Carteira A</h5>
-              <p>Valor Total: R$ 1234.56</p>
-            </div>
-          </a>
-        </div>
+        <?php } ?>
         
       </div>
     </main>

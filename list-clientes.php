@@ -67,7 +67,7 @@ if (array_key_exists("token", $_POST)) {
                 $id = $result['id'];
                 $nome = $result['nome'];
             ?>       
-              <a href="carteiras-cliente.php?id=<?=$id?>" target="_blank"><button class="w-100 row mb-3 btn btn-lg btn-success"><?=$nome?></button></a>
+              <a href="carteiras-cliente.php?id=<?=$id?>"><button class="w-100 row mb-3 btn btn-lg btn-success"><?=$nome?></button></a>
             <?php } } else { ?>
               <p>Nenhum cliente encontrado!</p>
             <?php } ?>
