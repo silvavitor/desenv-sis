@@ -13,6 +13,4 @@ if (!array_key_exists("tipo_usuario", $_SESSION)) {
   header('location: list-clientes.php');
 }
 
-var_dump($_SESSION);
-
 ?>

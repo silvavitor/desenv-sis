@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <title>Alteração de senha - ADS Carteiras</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sign-in/">
+    
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">    
     <!-- Custom styles for this template -->
     <!-- <link href="signin.css" rel="stylesheet"> -->
