@@ -61,32 +61,33 @@ if ($queryOperacoes && mysqli_num_rows($queryOperacoes) > 0) {
   <?php include_once('header.php'); ?>
 
   <main class="text-center form-signin w-100 m-auto">
-      <h1 class="h3 mb-5 fw-normal">Histórico da carteira: <?=$nome_carteira?>:</h1>
-      
-      <div class="container fw-bold">  
-        <div class="w-100 row mb-3 bg-info p-3 rounded">
-          <div class="col-4"><span>Ação</span></div>
-          <div class="col-4"><span>Lado</span></div>
-          <div class="col-4"><span>Quantidade</span></div>
-        </div> 
-        <?php 
-          
-          if (sizeof($operacoes) > 0) {
-            foreach ($operacoes as $operacao) {?>     
-              
-              <div class="w-100 row mb-3 <?=$operacao['lado']==1 ? "bg-success" : "bg-danger";?> p-3 rounded text-white">
-                <div class="col-4"><span><?=$operacao['nome_acao']?></span></div>
-                <div class="col-4"><span><?=$operacao['lado_nome']?></span></div>
-                <div class="col-4"><span><?=$operacao['quantidade']?></span></div>
-              </div>
-              
-        <?php } } else { ?>
-          <div class="w-100 row mb-3 bg-danger p-3 rounded text-white">
-            <div class="col-12"><span>Sem operações</span></div>
-          </div>
-        <?php } ?>    
-     </div>
-      <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
+    <h1 class="h3 mb-5 fw-normal">Histórico da carteira: <?=$nome_carteira?>:</h1>
+    
+    <div class="container fw-bold">  
+      <div class="w-100 row mb-3 bg-info p-3 rounded">
+        <div class="col-4"><span>Ação</span></div>
+        <div class="col-4"><span>Lado</span></div>
+        <div class="col-4"><span>Quantidade</span></div>
+      </div> 
+      <?php 
+        
+        if (sizeof($operacoes) > 0) {
+          foreach ($operacoes as $operacao) {?>     
+            
+            <div class="w-100 row mb-3 <?=$operacao['lado']==1 ? "bg-success" : "bg-danger";?> p-3 rounded text-white">
+              <div class="col-4"><span><?=$operacao['nome_acao']?></span></div>
+              <div class="col-4"><span><?=$operacao['lado_nome']?></span></div>
+              <div class="col-4"><span><?=$operacao['quantidade']?></span></div>
+            </div>
+            
+      <?php } } else { ?>
+        <div class="w-100 row mb-3 bg-danger p-3 rounded text-white">
+          <div class="col-12"><span>Sem operações</span></div>
+        </div>
+      <?php } ?>    
+    </div>
+    <a href="carteira.php?id=<?=$id_carteira?>" class="form-floating col-5 btn btn-lg btn-success">Voltar</a>      
+    <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
   </main>
 <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
