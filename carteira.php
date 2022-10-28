@@ -117,15 +117,15 @@ $queryCarteira = mysqli_query($mysqli,
       <div class="w-100 row">
         <div class="h-100 p-5 row">
           <div class="col">
-            <a href="investimento.php" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar investimento</button></a>
+            <a href="investimento.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar investimento</button></a>
           </div>
 
           <div class="col">
-            <a href="add-operacao.php" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar operação</button></a>
+            <a href="add-operacao.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar operação</button></a>
           </div>
 
           <div class="col">
-            <a href="historico-operacoes.php" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Histórico de operações</button></a>
+            <a href="historico-operacoes.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Histórico de operações</button></a>
           </div>
         </div>
       </div>

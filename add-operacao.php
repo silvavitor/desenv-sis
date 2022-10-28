@@ -1,3 +1,62 @@
+<?php 
+
+require_once('session-cliente.php');
+require_once('banco.php');
+
+// Verifica se o parametro esta no get
+if (!array_key_exists("id", $_GET)) {
+  header('location: home.php');
+}
+
+$id_carteira = $_GET['id'];
+$erroSemAcao = false;
+
+// Verifica se é uma carteira do cliente
+$id_cliente = $_SESSION['id'];
+
+$queryCarteira = mysqli_query($mysqli,
+  "SELECT * FROM carteira WHERE id='$id_carteira'"
+);
+
+if ($queryCarteira && ($result = mysqli_fetch_assoc($queryCarteira)) && (mysqli_num_rows($queryCarteira) > 0)) {
+  if ($result["id_cliente"] != $id_cliente) {
+    header('location: home.php');
+  }
+} else {
+  header('location: home.php');
+}
+
+if ((array_key_exists("lado", $_POST)) && 
+    (array_key_exists("acao", $_POST)) &&
+    (array_key_exists("quantidade", $_POST))) 
+{
+  $lado       = $_POST["lado"];
+  $acao       = $_POST["acao"];
+  $quantidade = $_POST["quantidade"];
+
+  $query = mysqli_query($mysqli, 
+      "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade)
+       VALUES ('$id_carteira', '$acao', '$lado', '$quantidade')"
+    );
+
+  if ($lado == 2) {
+    $quantidade = -$quantidade;
+  }
+
+  $queryQuantidade = mysqli_query($mysqli, 
+    "UPDATE carteira_acoes 
+     SET quantidade=(quantidade + $quantidade)
+     WHERE id=$acao"
+  );
+
+  if (($query) and ($queryQuantidade)) {
+    header("location: carteira.php?id=" . $id_carteira);
+  } else {
+    header('location: home.php');
+  }
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -21,13 +80,13 @@
 <body class="text-center bg-light bodycss"> 
   <?php include_once('header.php'); ?>   
   <main class="form-signin w-100 m-auto">
-    <form>
+    <form action="add-operacao.php?id=<?=$id_carteira?>" method="post">
       <h1 class="h3 mt-3 mb-3 fw-normal">Inserir operação</h1>
       
       <div class="container"> 
         <div class="row mb-3">
           <div class="form-floating col">        
-            <select id="lado" class="form-select pt-2" aria-label="Default select example">
+            <select id="lado" class="form-select pt-2" name="lado">
               <option selected value="1">Compra</option>
               <option value="2">Venda</option>
             </select>
@@ -35,15 +94,29 @@
         </div>        
         <div class="row mb-3">
           <div class="form-floating col">        
-            <select id="acao" class="form-select pt-2" aria-label="Default select example">
-              <option selected value="1">PETR4</option>
-              <option value="2">VALE3</option>
+            <select id="acao" class="form-select pt-2" name="acao">
+            <?php 
+              $queryAcoes = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira='$id_carteira'");
+              
+              if ($queryAcoes && mysqli_num_rows($queryAcoes) > 0) {
+                while ($result = mysqli_fetch_assoc($queryAcoes)) {
+                  $id = $result['id'];
+                  $acao = $result['acao']; ?>     
+                  
+                  <option value="<?=$id?>"><?=$acao;?></option>
+                  
+            <?php } } else { 
+              $erroSemAcao = true;
+            ?>
+              <option value="0">Não há nenhuma ação mapeada para a escolha</option>
+            <?php } ?>
+                
             </select>
           </div>
         </div>        
         <div class="row mb-3">
           <div class="form-floating col">        
-            <input type="number" class="form-control" id="quantidade" placeholder="Quantidade">
+            <input type="number" class="form-control" id="quantidade" placeholder="Quantidade" name="quantidade">
             <label for="quantidade">Quantidade</label>
           </div>
           &nbsp&nbsp
@@ -51,7 +124,9 @@
         <div class="row mb-3">
         </div>
       </div>
-      <button class="w-100 btn btn-lg btn-success" type="submit">Confirmar</button>
+      <?php if (!$erroSemAcao) { ?>
+        <button class="w-100 btn btn-lg btn-success" type="submit">Confirmar</button>
+      <?php } ?>
       <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     </form>
   </main>
