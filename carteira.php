@@ -104,8 +104,8 @@ $queryCarteira = mysqli_query($mysqli,
               </div>
               <?php if ($tipo_usuario == 1) { ?>
                 <div class="col-2 d-flex">
-                  <a href="carteira-info-1.php" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Editar</button></a>
-                  <a href="carteira-excluir.php"><button class="w-100 btn btn-lg btn-danger" type="submit">Excluir</button></a>
+                  <a href="carteira-info-1.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary">Editar</button></a>
+                  <a href="carteira-excluir.php?id=<?=$id_carteira?>"><button class="w-100 btn btn-lg btn-danger">Excluir</button></a>
                 </div>
               <?php } ?>
             </div>
