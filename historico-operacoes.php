@@ -65,9 +65,10 @@ if ($queryOperacoes && mysqli_num_rows($queryOperacoes) > 0) {
     
     <div class="container fw-bold">  
       <div class="w-100 row mb-3 bg-info p-3 rounded">
-        <div class="col-4"><span>Ação</span></div>
-        <div class="col-4"><span>Lado</span></div>
-        <div class="col-4"><span>Quantidade</span></div>
+        <div class="col-3"><span>Ação</span></div>
+        <div class="col-3"><span>Lado</span></div>
+        <div class="col-3"><span>Quantidade</span></div>
+        <div class="col-3"><span>Data</span></div>
       </div> 
       <?php 
         
@@ -75,9 +76,10 @@ if ($queryOperacoes && mysqli_num_rows($queryOperacoes) > 0) {
           foreach ($operacoes as $operacao) {?>     
             
             <div class="w-100 row mb-3 <?=$operacao['lado']==1 ? "bg-success" : "bg-danger";?> p-3 rounded text-white">
-              <div class="col-4"><span><?=$operacao['nome_acao']?></span></div>
-              <div class="col-4"><span><?=$operacao['lado_nome']?></span></div>
-              <div class="col-4"><span><?=$operacao['quantidade']?></span></div>
+              <div class="col-3"><span><?=$operacao['nome_acao']?></span></div>
+              <div class="col-3"><span><?=$operacao['lado_nome']?></span></div>
+              <div class="col-3"><span><?=$operacao['quantidade']?></span></div>
+              <div class="col-3"><span><?=$operacao['data']?></span></div>
             </div>
             
       <?php } } else { ?>

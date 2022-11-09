@@ -10,6 +10,7 @@ if (!array_key_exists("id", $_GET)) {
 
 $id_carteira = $_GET['id'];
 $erroSemAcao = false;
+$erroQuantidade = false;
 
 // Verifica se é uma carteira do cliente
 $id_cliente = $_SESSION['id'];
@@ -34,25 +35,38 @@ if ((array_key_exists("lado", $_POST)) &&
   $acao       = $_POST["acao"];
   $quantidade = $_POST["quantidade"];
 
-  $query = mysqli_query($mysqli, 
-      "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade)
-       VALUES ('$id_carteira', '$acao', '$lado', '$quantidade')"
-    );
-
   if ($lado == 2) {
+   
+    $queryQtd = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira = $id_carteira and id=$acao");  
+    
+    if ($queryQtd && (mysqli_num_rows($queryQtd) > 0) && ($result = mysqli_fetch_assoc($queryQtd))) {
+      if ($result['quantidade'] < $quantidade) {
+          $erroQuantidade = true;
+        }
+      }
     $quantidade = -$quantidade;
-  }
+  } 
 
-  $queryQuantidade = mysqli_query($mysqli, 
-    "UPDATE carteira_acoes 
-     SET quantidade=(quantidade + $quantidade)
-     WHERE id=$acao"
-  );
+  if (!$erroQuantidade) {
 
-  if (($query) and ($queryQuantidade)) {
-    header("location: carteira.php?id=" . $id_carteira);
-  } else {
-    header('location: home.php');
+    $query = mysqli_query($mysqli, 
+        "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade, data)
+         VALUES ('$id_carteira', '$acao', '$lado', '$quantidade', NOW())"
+      );
+  
+    
+  
+    $queryQuantidade = mysqli_query($mysqli, 
+      "UPDATE carteira_acoes 
+       SET quantidade=(quantidade + $quantidade)
+       WHERE id=$acao"
+    );
+  
+    if (($query) and ($queryQuantidade)) {
+      header("location: carteira.php?id=" . $id_carteira);
+    } else {
+      header('location: home.php');
+    }
   }
 }
 ?>
@@ -82,6 +96,12 @@ if ((array_key_exists("lado", $_POST)) &&
   <main class="form-signin w-100 m-auto">
     <form action="add-operacao.php?id=<?=$id_carteira?>" method="post">
       <h1 class="h3 mt-3 mb-3 fw-normal">Inserir operação</h1>
+      
+      <?php if ($erroQuantidade) { ?>
+        <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+          <span>Quantidade de ações inválida!</span>
+        </div>
+      <?php } ?>
       
       <div class="container"> 
         <div class="row mb-3">
