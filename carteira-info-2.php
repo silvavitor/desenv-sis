@@ -6,6 +6,7 @@ require_once('banco.php');
 if ((!array_key_exists("descricao", $_POST)) or (!array_key_exists("qtdacoes", $_POST)) or ($_POST["descricao"] == "") or ($_POST["qtdacoes"] == "")){
   header('location: carteira-info-1.php?erro=1');
 }
+$id_cliente = $_SESSION['id'];
 
 $descricao = $_POST["descricao"];
 $qtdacoes  = $_POST["qtdacoes"];
@@ -15,6 +16,16 @@ $id_carteira = 0;
 
 $erroPorcentagem = false;
 $erroPreenchimento = false;
+$erroExistente = false;
+
+// Verificar se o nome de carteira nao existe
+$queryExistente = mysqli_query($mysqli, 
+  "SELECT id FROM carteira WHERE descricao='$descricao' AND id_cliente=$id_cliente"
+);
+
+if (mysqli_num_rows($queryExistente) > 0) {
+  header('location: carteira-info-1.php?erro=2');
+}
 
 // Envio de info
 if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_POST))) {
@@ -42,27 +53,34 @@ if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_P
 
   // Se não houve erros
   if ((!$erroPorcentagem) and (!$erroPreenchimento)) {
-    $id_cliente = $_SESSION['id'];
-    // Insere carteira
-    $query = mysqli_query($mysqli, 
-      "INSERT INTO carteira (id_cliente, descricao)
-       VALUES ('$id_cliente', '$descricao')"
-    );
 
-    // Insere acoes
-    if ($query) {
-      $id_carteira = mysqli_insert_id($mysqli);
+    // Inserção
+    if ($id_carteira == 0) {
+      // Insere carteira
+      $query = mysqli_query($mysqli, 
+        "INSERT INTO carteira (id_cliente, descricao)
+          VALUES ('$id_cliente', '$descricao')"
+      );
 
-      for ($i=0; $i < $qtdacoes; $i++) {
-        $acao = $_POST["acoes"][$i];
-        $porcentagem = $_POST["porcentagem"][$i];
-        $query = mysqli_query($mysqli, 
-          "INSERT INTO carteira_acoes (id_carteira, acao, quantidade, porcentagem_objetivo)
-          VALUES ('$id_carteira', '$acao', 0, '$porcentagem')"
-        );
+      // Insere acoes
+      if ($query) {
+        $id_carteira = mysqli_insert_id($mysqli);
+
+        for ($i=0; $i < $qtdacoes; $i++) {
+          $acao = $_POST["acoes"][$i];
+          $porcentagem = $_POST["porcentagem"][$i];
+          $query = mysqli_query($mysqli, 
+            "INSERT INTO carteira_acoes (id_carteira, acao, quantidade, porcentagem_objetivo)
+            VALUES ('$id_carteira', '$acao', 0, '$porcentagem')"
+          );
+        }
+
+        header('location: home.php');
       }
+    }
+    // Edição
+    else {
 
-      header('location: home.php');
     }
   }
 }
