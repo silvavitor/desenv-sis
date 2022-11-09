@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2022 at 10:42 PM
+-- Generation Time: Nov 09, 2022 at 09:43 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -60,9 +60,34 @@ CREATE TABLE `carteira_acoes` (
 --
 
 INSERT INTO `carteira_acoes` (`id`, `id_carteira`, `acao`, `quantidade`, `porcentagem_objetivo`) VALUES
-(1, 1, 'acao1', 0, 25),
-(2, 1, 'acao2', 0, 30),
-(3, 1, 'acao3', 0, 45);
+(1, 1, 'acao1', 123, 25),
+(2, 1, 'acao2', 123123, 30),
+(3, 1, 'acao3', 4244, 45);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `operacoes`
+--
+
+CREATE TABLE `operacoes` (
+  `id` int(11) NOT NULL,
+  `id_carteira` int(11) NOT NULL,
+  `id_acao` int(11) NOT NULL,
+  `lado` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `operacoes`
+--
+
+INSERT INTO `operacoes` (`id`, `id_carteira`, `id_acao`, `lado`, `quantidade`) VALUES
+(11, 1, 2, 1, 123123),
+(12, 1, 1, 1, 123),
+(13, 1, 3, 1, 5555),
+(14, 1, 3, 2, 1111),
+(15, 1, 3, 2, 200);
 
 -- --------------------------------------------------------
 
@@ -132,6 +157,12 @@ ALTER TABLE `carteira_acoes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `operacoes`
+--
+ALTER TABLE `operacoes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `token`
 --
 ALTER TABLE `token`
@@ -151,13 +182,19 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `carteira`
 --
 ALTER TABLE `carteira`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `carteira_acoes`
 --
 ALTER TABLE `carteira_acoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `operacoes`
+--
+ALTER TABLE `operacoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `token`

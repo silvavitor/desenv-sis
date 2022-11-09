@@ -11,6 +11,7 @@ $descricao = $_POST["descricao"];
 $qtdacoes  = $_POST["qtdacoes"];
 
 $acoes = [];
+$id_carteira = 0;
 
 $erroPorcentagem = false;
 $erroPreenchimento = false;
@@ -64,7 +65,38 @@ if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_P
       header('location: home.php');
     }
   }
+}
 
+// Se existe id é uma edição
+if (array_key_exists("id", $_GET)) {
+  $id_carteira = $_GET['id'];
+
+  // Verifica se a carteira é do cliente
+  $id_cliente = $_SESSION['id'];
+
+  $queryCarteira = mysqli_query($mysqli,
+    "SELECT * FROM carteira WHERE id='$id_carteira'"
+  );
+
+  if ($queryCarteira && ($result = mysqli_fetch_assoc($queryCarteira)) && (mysqli_num_rows($queryCarteira) > 0)) {
+    if ($result["id_cliente"] != $id_cliente) {
+      header('location: home.php');
+    }
+  } else {
+    header('location: home.php');
+  }
+  
+  // Query e consulta aos ativos
+  $queryAcoes = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira = $id_carteira;");
+
+  if ($queryAcoes && (mysqli_num_rows($queryAcoes) > 0)) {
+    while ($acao = mysqli_fetch_assoc($queryAcoes)) {
+      $acoes[] = $acao['acao'];
+      $porcentagem[] = $acao['porcentagem_objetivo'];
+    }
+  } else {
+    header('location: home.php');
+  }
 }
 
 ?>
@@ -114,12 +146,12 @@ if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_P
           <?php for ($i=1; $i <= $qtdacoes; $i++) { ?>
             <div class="row mb-3">
               <div class="form-floating col">        
-                <input type="text" class="form-control" id="acao<?=$i?>" placeholder="acao<?=$i?>" name="acoes[<?=$i-1?>]">
+                <input type="text" class="form-control" id="acao<?=$i?>" placeholder="acao<?=$i?>" name="acoes[<?=$i-1?>]" value="<?=$id_carteira != 0 ? $acoes[$i-1] : "";?>">
                 <label for="acao<?=$i?>">Ação <?=$i?></label>
               </div>
               &nbsp&nbsp
               <div class="form-floating col">        
-                <input type="text" class="form-control" id="porcentagem<?=$i?>" placeholder="porcentagem<?=$i?>" name="porcentagem[<?=$i-1?>]">
+                <input type="text" class="form-control" id="porcentagem<?=$i?>" placeholder="porcentagem<?=$i?>" name="porcentagem[<?=$i-1?>]" value="<?=$id_carteira != 0 ? $porcentagem[$i-1] : "";?>">
                 <label for="porcentagem<?=$i?>">Porcentagem alvo</label>
               </div>
             </div>
