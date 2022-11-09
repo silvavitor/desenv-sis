@@ -11,7 +11,6 @@ $erroDescricao = false;
 
 if (array_key_exists("erro", $_GET)) {
   $id_erro = $_GET['erro'];
-  var_dump($id_erro);
   
  if ($id_erro == 1) {
   $erroPreenchimento = true;
