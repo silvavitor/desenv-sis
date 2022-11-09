@@ -35,8 +35,8 @@ if ((array_key_exists("lado", $_POST)) &&
   $quantidade = $_POST["quantidade"];
 
   $query = mysqli_query($mysqli, 
-      "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade)
-       VALUES ('$id_carteira', '$acao', '$lado', '$quantidade')"
+      "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade, data)
+       VALUES ('$id_carteira', '$acao', '$lado', '$quantidade', NOW())"
     );
 
   if ($lado == 2) {
