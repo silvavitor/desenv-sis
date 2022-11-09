@@ -3,8 +3,8 @@
 require_once('session-cliente.php');
 require_once('banco.php');
 
-if ((!array_key_exists("descricao", $_POST)) or (!array_key_exists("qtdacoes", $_POST))) {
-  header('location: carteira-info-1.php');
+if ((!array_key_exists("descricao", $_POST)) or (!array_key_exists("qtdacoes", $_POST)) or ($_POST["descricao"] == "") or ($_POST["qtdacoes"] == "")){
+  header('location: carteira-info-1.php?erro=1');
 }
 
 $descricao = $_POST["descricao"];

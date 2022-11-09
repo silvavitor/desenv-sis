@@ -6,6 +6,15 @@ require_once('banco.php');
 $descricao = '';
 $qtd = '';
 $id_carteira = 0;
+$erroPreenchimento = false;
+
+if (array_key_exists("erro", $_GET)) {
+  $idErro = $_GET['erro'];
+  
+ if ($idErro = 1) {
+  $erroPreenchimento = true;
+ }
+}
 
 // Se existe id é uma edição
 if (array_key_exists("id", $_GET)) {
@@ -47,6 +56,11 @@ if (array_key_exists("id", $_GET)) {
   <form action="carteira-info-2.php<?= $id_carteira != 0 ? "?id=$id_carteira" : "" ?>" method="post">
     <h1 class="h3 mb-3 fw-normal">Insira os dados da carteira</h1>
     <div class="form-container">
+    <?php if ($erroPreenchimento) { ?>
+        <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+          <span>Campos não preenchidos corretamente</span>
+        </div>
+      <?php } ?>
       <div class="form-floating mb-2">        
         <input type="text" class="form-control" id="descricao" placeholder="descricao" name="descricao" value="<?=$descricao;?>">
         <label for="descricao">Descrição da nova carteira</label>
