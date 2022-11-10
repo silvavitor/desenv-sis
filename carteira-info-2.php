@@ -18,13 +18,37 @@ $erroPorcentagem = false;
 $erroPreenchimento = false;
 $erroExistente = false;
 
-// Verificar se o nome de carteira nao existe
-$queryExistente = mysqli_query($mysqli, 
-  "SELECT id FROM carteira WHERE descricao='$descricao' AND id_cliente=$id_cliente"
-);
 
-if (mysqli_num_rows($queryExistente) > 0) {
-  header('location: carteira-info-1.php?erro=2');
+// Se existe id é uma edição
+if (array_key_exists("id", $_GET)) {
+  $id_carteira = $_GET['id'];
+
+  // Verifica se a carteira é do cliente
+  $id_cliente = $_SESSION['id'];
+
+  $queryCarteira = mysqli_query($mysqli,
+    "SELECT * FROM carteira WHERE id='$id_carteira'"
+  );
+
+  if ($queryCarteira && ($result = mysqli_fetch_assoc($queryCarteira)) && (mysqli_num_rows($queryCarteira) > 0)) {
+    if ($result["id_cliente"] != $id_cliente) {
+      header('location: home.php');
+    }
+  } else {
+    header('location: home.php');
+  }
+}
+
+// Se for uma inserção
+if ($id_carteira == 0) {
+  // Verificar se o nome de carteira nao existe
+  $queryExistente = mysqli_query($mysqli, 
+    "SELECT id FROM carteira WHERE descricao='$descricao' AND id_cliente=$id_cliente"
+  );
+
+  if (mysqli_num_rows($queryExistente) > 0) {
+    header('location: carteira-info-1.php?erro=2');
+  }
 }
 
 // Envio de info
@@ -54,56 +78,72 @@ if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_P
   // Se não houve erros
   if ((!$erroPorcentagem) and (!$erroPreenchimento)) {
 
-    // Inserção
+    // Insere carteira
     if ($id_carteira == 0) {
-      // Insere carteira
-      $query = mysqli_query($mysqli, 
-        "INSERT INTO carteira (id_cliente, descricao)
-          VALUES ('$id_cliente', '$descricao')"
-      );
+      var_dump($id_carteira);
+      // $query = mysqli_query($mysqli, 
+      //   "INSERT INTO carteira (id_cliente, descricao)
+      //     VALUES ('$id_cliente', '$descricao')"
+      // );
 
-      // Insere acoes
+      // // Insere acoes
+      // if ($query) {
+      //   $id_carteira = mysqli_insert_id($mysqli);
+
+      //   for ($i=0; $i < $qtdacoes; $i++) {
+      //     $acao = $_POST["acoes"][$i];
+      //     $porcentagem = $_POST["porcentagem"][$i];
+      //     $query = mysqli_query($mysqli, 
+      //       "INSERT INTO carteira_acoes (id_carteira, acao, quantidade, porcentagem_objetivo)
+      //       VALUES ('$id_carteira', '$acao', 0, '$porcentagem')"
+      //     );
+      //   }
+
+      //   header('location: home.php');
+      // }
+    }
+    // Edita carteira
+    else {
+
+      // Edita carteira
+      $query = mysqli_query($mysqli, "UPDATE carteira SET descricao='$descricao' WHERE id=$id_carteira");
+
+      // Edita acoes
       if ($query) {
-        $id_carteira = mysqli_insert_id($mysqli);
+        // Consulta as acoes existentes
+        $acoesExistentes = [];
+        $queryAcoesExistentes = mysqli_query($mysqli, "SELECT * carteira_acoes WHERE id_carteira=$id_carteira");
+        if ($queryAcoesExistentes && (mysqli_num_rows($queryAcoesExistentes) > 0)) {
+          while ($acao = mysqli_fetch_assoc($queryAcoesExistentes)) {
+            $acoesExistentes[$acao['acao']] = $acao['quantidade'];
+          }
+        } 
+        
+        // Remove as existentes
+        $query = mysqli_query($mysqli, "DELETE FROM carteira_acoes WHERE id_carteira=$id_carteira");
 
         for ($i=0; $i < $qtdacoes; $i++) {
+          if (array_key_exists($_POST["acoes"][$i], $acoesExistentes)) {
+            $quantidade = $acoesExistentes[$_POST["acoes"][$i]];
+          } else {
+            $quantidade = 0;
+          }
           $acao = $_POST["acoes"][$i];
           $porcentagem = $_POST["porcentagem"][$i];
           $query = mysqli_query($mysqli, 
             "INSERT INTO carteira_acoes (id_carteira, acao, quantidade, porcentagem_objetivo)
-            VALUES ('$id_carteira', '$acao', 0, '$porcentagem')"
+            VALUES ('$id_carteira', '$acao', '$quantidade', '$porcentagem')"
           );
         }
 
         header('location: home.php');
       }
     }
-    // Edição
-    else {
-
-    }
   }
 }
 
-// Se existe id é uma edição
 if (array_key_exists("id", $_GET)) {
   $id_carteira = $_GET['id'];
-
-  // Verifica se a carteira é do cliente
-  $id_cliente = $_SESSION['id'];
-
-  $queryCarteira = mysqli_query($mysqli,
-    "SELECT * FROM carteira WHERE id='$id_carteira'"
-  );
-
-  if ($queryCarteira && ($result = mysqli_fetch_assoc($queryCarteira)) && (mysqli_num_rows($queryCarteira) > 0)) {
-    if ($result["id_cliente"] != $id_cliente) {
-      header('location: home.php');
-    }
-  } else {
-    header('location: home.php');
-  }
-  
   // Query e consulta aos ativos
   $queryAcoes = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira = $id_carteira;");
 
@@ -142,7 +182,7 @@ if (array_key_exists("id", $_GET)) {
   <body class="bg-light">
     <?php include_once('header.php'); ?>  
     <main class="form-signin w-100 m-auto">
-      <form action="carteira-info-2.php" method="post">
+      <form action="carteira-info-2.php<?= $id_carteira != 0 ? "?id=$id_carteira" : "" ?>" method="post">
 
       <?php if ($erroPreenchimento) { ?>
         <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
