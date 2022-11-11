@@ -1,0 +1,2 @@
+4cff688a
+https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol=embr3
