@@ -111,7 +111,7 @@ if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_P
       if ($query) {
         // Consulta as acoes existentes
         $acoesExistentes = [];
-        $queryAcoesExistentes = mysqli_query($mysqli, "SELECT * carteira_acoes WHERE id_carteira=$id_carteira");
+        $queryAcoesExistentes = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira=$id_carteira");
         if ($queryAcoesExistentes && (mysqli_num_rows($queryAcoesExistentes) > 0)) {
           while ($acao = mysqli_fetch_assoc($queryAcoesExistentes)) {
             $acoesExistentes[$acao['acao']] = $acao['quantidade'];
