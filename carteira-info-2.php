@@ -80,27 +80,26 @@ if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_P
 
     // Insere carteira
     if ($id_carteira == 0) {
-      var_dump($id_carteira);
-      // $query = mysqli_query($mysqli, 
-      //   "INSERT INTO carteira (id_cliente, descricao)
-      //     VALUES ('$id_cliente', '$descricao')"
-      // );
+      $query = mysqli_query($mysqli, 
+        "INSERT INTO carteira (id_cliente, descricao)
+          VALUES ('$id_cliente', '$descricao')"
+      );
 
-      // // Insere acoes
-      // if ($query) {
-      //   $id_carteira = mysqli_insert_id($mysqli);
+      // Insere acoes
+      if ($query) {
+        $id_carteira = mysqli_insert_id($mysqli);
 
-      //   for ($i=0; $i < $qtdacoes; $i++) {
-      //     $acao = $_POST["acoes"][$i];
-      //     $porcentagem = $_POST["porcentagem"][$i];
-      //     $query = mysqli_query($mysqli, 
-      //       "INSERT INTO carteira_acoes (id_carteira, acao, quantidade, porcentagem_objetivo)
-      //       VALUES ('$id_carteira', '$acao', 0, '$porcentagem')"
-      //     );
-      //   }
+        for ($i=0; $i < $qtdacoes; $i++) {
+          $acao = $_POST["acoes"][$i];
+          $porcentagem = $_POST["porcentagem"][$i];
+          $query = mysqli_query($mysqli, 
+            "INSERT INTO carteira_acoes (id_carteira, acao, quantidade, porcentagem_objetivo)
+            VALUES ('$id_carteira', '$acao', 0, '$porcentagem')"
+          );
+        }
 
-      //   header('location: home.php');
-      // }
+        header('location: home.php');
+      }
     }
     // Edita carteira
     else {
@@ -136,7 +135,7 @@ if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_P
           );
         }
 
-        header('location: home.php');
+        header("location: carteira.php?id=$id_carteira");
       }
     }
   }
@@ -201,12 +200,30 @@ if (array_key_exists("id", $_GET)) {
         <h1 class="h3 mb-3 fw-normal">Insira os dados da ações</h1>
         <div class="container">
 
-          <?php for ($i=1; $i <= $qtdacoes; $i++) { ?>
+          <?php 
+          $queryAcoes = mysqli_query($mysqli, "SELECT * FROM acoes");
+          $listAcoes = [];
+
+          if ($queryAcoes && mysqli_num_rows($queryAcoes) > 0) {
+            while ($result = mysqli_fetch_assoc($queryAcoes)) {
+              $listAcoes[] = $result;
+            }
+          }
+
+          for ($i=1; $i <= $qtdacoes; $i++) { 
+          ?>
             <div class="row mb-3">
               <div class="form-floating col">        
-                <input type="text" class="form-control" id="acao<?=$i?>" placeholder="acao<?=$i?>" name="acoes[<?=$i-1?>]" value="<?=$id_carteira != 0 ? $acoes[$i-1] : "";?>">
-                <label for="acao<?=$i?>">Ação <?=$i?></label>
+                <select id="acao<?=$i?>" class="form-select pt-2" name="acoes[<?=$i-1?>]">
+                  <?php foreach ($listAcoes as $acao) { ?>                  
+                      
+                    <option value="<?=$acao['papel'];?>" <?=(($id_carteira != 0) && ($acao['papel'] == $acoes[$i-1])) ? "selected" : "";?> ><?=$acao['papel'];?></option>
+                      
+                  <?php } ?>
+                    
+                </select>
               </div>
+
               &nbsp&nbsp
               <div class="form-floating col">        
                 <input type="text" class="form-control" id="porcentagem<?=$i?>" placeholder="porcentagem<?=$i?>" name="porcentagem[<?=$i-1?>]" value="<?=$id_carteira != 0 ? $porcentagem[$i-1] : "";?>">
