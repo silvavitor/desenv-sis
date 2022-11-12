@@ -1,2 +1,16 @@
 4cff688a
 https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol=embr3
+
+
+
+$url  = 'https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol=PETR4';
+$ch   = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+$result = curl_exec($ch);
+
+curl_close($ch);
+
+print_r(json_decode($result)->results->PETR4->price);die;

@@ -78,6 +78,65 @@ $queryCarteira = mysqli_query($mysqli,
       header('location: list-clientes.php');
     }
   }
+
+
+//////////////////////////////////////////////////////////////////////////////
+// API
+//////////////////////////////////////////////////////////////////////////////
+
+// Estrutura da $tabela
+// - qtd (banco)
+// - cotacao_atual (api)
+// - patrimonio (qtd * cotacao_atual)
+// - participacao 
+// - objetivo (banco)
+// - distancia_objetivo (objetivo - participacao)'
+$tabela = [];
+$patrimonio_total = 0;
+
+$queryAcoes = mysqli_query($mysqli,
+  "SELECT 
+    * 
+  FROM 
+    carteira_acoes
+  WHERE 
+    id_carteira = $id_carteira"
+);
+
+while (($acao = mysqli_fetch_assoc($queryAcoes))) {
+  ////////////////////////////////////////////////////////////////////
+  // Consulta a API
+  ////////////////////////////////////////////////////////////////////
+  $ativo = $acao["acao"];
+  $url  = 'https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol='.$ativo;
+  $ch   = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  $result = curl_exec($ch);
+  curl_close($ch);
+
+  $preco = json_decode($result)->results->$ativo->price;
+
+  $tabela[$acao['acao']] = [
+    "qtd"                => $acao["quantidade"],
+    "cotacao_atual"      => $preco,
+    "patrimonio"         => $acao["quantidade"] * $preco,
+    "participacao"       => 0,
+    "objetivo"           => $acao["porcentagem_objetivo"],
+    "distancia_objetivo" => 0,
+  ];
+
+  $patrimonio_total += $acao["quantidade"] * $preco;
+}
+
+foreach ($tabela as $acao => $dados) {
+  $participacao = (100 * $dados["patrimonio"]) / $patrimonio_total;
+  $distancia = $dados["objetivo"] - $participacao;
+
+  $tabela[$acao]["participacao"] = $participacao;
+  $tabela[$acao]["distancia_objetivo"] = $distancia;
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -159,26 +218,16 @@ $queryCarteira = mysqli_query($mysqli,
           <div class="col"><span>Distância do objetivo</span></div>
         </div>
 
-        <?php 
-        $queryAcoes = mysqli_query($mysqli,
-          "SELECT 
-            * 
-          FROM 
-            carteira_acoes
-          WHERE 
-            id_carteira = $id_carteira"
-        );
-      
-        while (($acao = mysqli_fetch_assoc($queryAcoes))) { ?>
+        <?php foreach ($tabela as $ativo => $dados) { ?>
           <div class="row mb-3 bg-secondary bg-gradient p-3 rounded text-white">
-            <div class="col"><span><?=$acao['acao'];?></span></div>
+            <div class="col"><span><?=$ativo;?></span></div>
             <div class="col"><span>XXXXXX</span></div>
-            <div class="col"><span><?=$acao['quantidade'];?></span></div>
-            <div class="col"><span>R$ XXXXXX</span></div>
-            <div class="col"><span>R$ XXXXXX</span></div>
-            <div class="col"><span>XX%</span></div>
-            <div class="col"><span><?=$acao['porcentagem_objetivo'];?>%</span></div>
-            <div class="col"><span>XX%</span></div>
+            <div class="col"><span><?=$dados['qtd'];?></span></div>
+            <div class="col"><span>R$ <?=number_format((float)$dados['cotacao_atual'], 2, ',', '');?></span></div>
+            <div class="col"><span>R$ <?=number_format((float)$dados['patrimonio'], 2, ',', '');?></span></div>
+            <div class="col"><span><?=number_format((float)$dados['participacao'], 2, ',', '');?>%</span></div>
+            <div class="col"><span><?=number_format((float)$dados['objetivo'], 2, ',', '');;?>%</span></div>
+            <div class="col"><span><?=number_format((float)$dados['distancia_objetivo'], 2, ',', '');?>%</span></div>
           </div>
         <?php } ?>        
      </div>
