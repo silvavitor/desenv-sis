@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 10-Nov-2022 às 00:15
--- Versão do servidor: 10.4.22-MariaDB
--- versão do PHP: 8.0.15
+-- Generation Time: Nov 12, 2022 at 07:57 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,33 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `adscarteiras`
+-- Database: `adscarteiras`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `carteira`
+-- Table structure for table `acoes`
+--
+
+CREATE TABLE `acoes` (
+  `id` int(11) NOT NULL,
+  `papel` varchar(10) NOT NULL,
+  `segmento` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `acoes`
+--
+
+INSERT INTO `acoes` (`id`, `papel`, `segmento`) VALUES
+(1, 'PETR4', ''),
+(2, 'VALE3', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `carteira`
 --
 
 CREATE TABLE `carteira` (
@@ -34,7 +54,7 @@ CREATE TABLE `carteira` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Extraindo dados da tabela `carteira`
+-- Dumping data for table `carteira`
 --
 
 INSERT INTO `carteira` (`id`, `id_cliente`, `descricao`) VALUES
@@ -48,7 +68,7 @@ INSERT INTO `carteira` (`id`, `id_cliente`, `descricao`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `carteira_acoes`
+-- Table structure for table `carteira_acoes`
 --
 
 CREATE TABLE `carteira_acoes` (
@@ -60,13 +80,10 @@ CREATE TABLE `carteira_acoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Extraindo dados da tabela `carteira_acoes`
+-- Dumping data for table `carteira_acoes`
 --
 
 INSERT INTO `carteira_acoes` (`id`, `id_carteira`, `acao`, `quantidade`, `porcentagem_objetivo`) VALUES
-(1, 1, 'acao1', 123, 25),
-(2, 1, 'acao2', 123101, 30),
-(3, 1, 'acao3', 4256, 45),
 (6, 4, 'aaaa', 0, 33),
 (7, 4, 'bbbb', 0, 33),
 (8, 4, 'ccccc', 0, 34),
@@ -80,12 +97,14 @@ INSERT INTO `carteira_acoes` (`id`, `id_carteira`, `acao`, `quantidade`, `porcen
 (16, 7, 'asd', 0, 25),
 (17, 7, 'fgh', 0, 25),
 (18, 7, 'hyt', 0, 25),
-(19, 7, 'hhhh', 0, 25);
+(19, 7, 'hhhh', 0, 25),
+(20, 1, 'VALE3', 200, 70),
+(21, 1, 'PETR4', 100, 30);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `operacoes`
+-- Table structure for table `operacoes`
 --
 
 CREATE TABLE `operacoes` (
@@ -98,7 +117,7 @@ CREATE TABLE `operacoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Extraindo dados da tabela `operacoes`
+-- Dumping data for table `operacoes`
 --
 
 INSERT INTO `operacoes` (`id`, `id_carteira`, `id_acao`, `lado`, `quantidade`, `data`) VALUES
@@ -108,12 +127,14 @@ INSERT INTO `operacoes` (`id`, `id_carteira`, `id_acao`, `lado`, `quantidade`, `
 (14, 1, 3, 2, 1111, NULL),
 (15, 1, 3, 2, 200, NULL),
 (20, 1, 2, 2, 22, '0000-00-00 00:00:00'),
-(21, 1, 3, 1, 12, '2022-11-09 20:13:25');
+(21, 1, 3, 1, 12, '2022-11-09 20:13:25'),
+(22, 1, 20, 1, 200, '2022-11-12 15:14:47'),
+(23, 1, 21, 1, 100, '2022-11-12 15:37:42');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `token`
+-- Table structure for table `token`
 --
 
 CREATE TABLE `token` (
@@ -124,7 +145,7 @@ CREATE TABLE `token` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Extraindo dados da tabela `token`
+-- Dumping data for table `token`
 --
 
 INSERT INTO `token` (`id`, `id_analista`, `token`, `usada`) VALUES
@@ -137,7 +158,7 @@ INSERT INTO `token` (`id`, `id_analista`, `token`, `usada`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `usuario`
+-- Table structure for table `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -155,7 +176,7 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Extraindo dados da tabela `usuario`
+-- Dumping data for table `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `tipo`, `nome`, `sobrenome`, `rg`, `cpf`, `endereco`, `celular`, `email`, `senha`, `id_token`) VALUES
@@ -164,69 +185,81 @@ INSERT INTO `usuario` (`id`, `tipo`, `nome`, `sobrenome`, `rg`, `cpf`, `endereco
 (8, 1, 'Gelson', 'da Luz', '4845656564', '', 'asdsaasd', '556165156156', 'gelson@teste.com', '12345', 6);
 
 --
--- Índices para tabelas despejadas
+-- Indexes for dumped tables
 --
 
 --
--- Índices para tabela `carteira`
+-- Indexes for table `acoes`
+--
+ALTER TABLE `acoes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `carteira`
 --
 ALTER TABLE `carteira`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `carteira_acoes`
+-- Indexes for table `carteira_acoes`
 --
 ALTER TABLE `carteira_acoes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `operacoes`
+-- Indexes for table `operacoes`
 --
 ALTER TABLE `operacoes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `token`
+-- Indexes for table `token`
 --
 ALTER TABLE `token`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `usuario`
+-- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT de tabelas despejadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de tabela `carteira`
+-- AUTO_INCREMENT for table `acoes`
+--
+ALTER TABLE `acoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `carteira`
 --
 ALTER TABLE `carteira`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT de tabela `carteira_acoes`
+-- AUTO_INCREMENT for table `carteira_acoes`
 --
 ALTER TABLE `carteira_acoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT de tabela `operacoes`
---
-ALTER TABLE `operacoes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT de tabela `token`
+-- AUTO_INCREMENT for table `operacoes`
+--
+ALTER TABLE `operacoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de tabela `usuario`
+-- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
