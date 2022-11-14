@@ -130,7 +130,12 @@ while (($acao = mysqli_fetch_assoc($queryAcoes))) {
 }
 
 foreach ($tabela as $acao => $dados) {
-  $participacao = (100 * $dados["patrimonio"]) / $patrimonio_total;
+  if ($patrimonio_total > 0) {
+    $participacao = (100 * $dados["patrimonio"]) / $patrimonio_total;
+  } else {
+    $participacao = 0;
+  }
+
   $distancia = $dados["objetivo"] - $participacao;
 
   $tabela[$acao]["participacao"] = $participacao;
