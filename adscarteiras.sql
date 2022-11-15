@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2022 at 07:57 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Nov 15, 2022 at 05:03 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 8.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,8 +38,98 @@ CREATE TABLE `acoes` (
 --
 
 INSERT INTO `acoes` (`id`, `papel`, `segmento`) VALUES
-(1, 'PETR4', ''),
-(2, 'VALE3', '');
+(1, 'RRRP3', ''),
+(2, 'ALPA4', ''),
+(3, 'ABEV3', ''),
+(4, 'AMER3', ''),
+(5, 'ARZZ3', ''),
+(6, 'ASAI3', ''),
+(7, 'AZUL4', ''),
+(8, 'B3SA3', ''),
+(9, 'BPAN4', ''),
+(10, 'BBSE3', ''),
+(11, 'BRML3', ''),
+(12, 'BBDC3', ''),
+(13, 'BBDC4', ''),
+(14, 'BRAP4', ''),
+(15, 'BBAS3', ''),
+(16, 'BRKM5', ''),
+(17, 'BRFS3', ''),
+(18, 'BPAC11', ''),
+(19, 'CRFB3', ''),
+(20, 'CCRO3', ''),
+(21, 'CMIG4', ''),
+(22, 'CIEL3', ''),
+(23, 'COGN3', ''),
+(24, 'CPLE6', ''),
+(25, 'CSAN3', ''),
+(26, 'CPFE3', ''),
+(27, 'CMIN3', ''),
+(28, 'CVCB3', ''),
+(29, 'CYRE3', ''),
+(30, 'DXCO3', ''),
+(31, 'ECOR3', ''),
+(32, 'ELET3', ''),
+(33, 'ELET6', ''),
+(34, 'EMBR3', ''),
+(35, 'ENBR3', ''),
+(36, 'ENGI11', ''),
+(37, 'ENEV3', ''),
+(38, 'EGIE3', ''),
+(39, 'EQTL3', ''),
+(40, 'EZTC3', ''),
+(41, 'FLRY3', ''),
+(42, 'GGBR4', ''),
+(43, 'GOAU4', ''),
+(44, 'GOLL4', ''),
+(45, 'NTCO3', ''),
+(46, 'SOMA3', ''),
+(47, 'HAPV3', ''),
+(48, 'HYPE3', ''),
+(49, 'IGTI11', ''),
+(50, 'IRBR3', ''),
+(51, 'ITSA4', ''),
+(52, 'ITUB4', ''),
+(53, 'JBSS3', ''),
+(54, 'KLBN11', ''),
+(55, 'RENT3', ''),
+(56, 'LWSA3', ''),
+(57, 'LREN3', ''),
+(58, 'MGLU3', ''),
+(59, 'MRFG3', ''),
+(60, 'CASH3', ''),
+(61, 'BEEF3', ''),
+(62, 'MRVE3', ''),
+(63, 'MULT3', ''),
+(64, 'PCAR3', ''),
+(65, 'PETR3', ''),
+(66, 'PETR4', ''),
+(67, 'PRIO3', ''),
+(68, 'PETZ3', ''),
+(69, 'POSI3', ''),
+(70, 'QUAL3', ''),
+(71, 'RADL3', ''),
+(72, 'RAIZ4', ''),
+(73, 'RDOR3', ''),
+(74, 'RAIL3', ''),
+(75, 'SBSP3', ''),
+(76, 'SANB11', ''),
+(77, 'SMTO3', ''),
+(78, 'CSNA3', ''),
+(79, 'SLCE3', ''),
+(80, 'SULA11', ''),
+(81, 'SUZB3', ''),
+(82, 'TAEE11', ''),
+(83, 'VIVT3', ''),
+(84, 'TIMS3', ''),
+(85, 'TOTS3', ''),
+(86, 'UGPA3', ''),
+(87, 'USIM5', ''),
+(88, 'VALE3', ''),
+(89, 'VIIA3', ''),
+(90, 'VBBR3', ''),
+(91, 'WEGE3', ''),
+(92, 'YDUQ3', '');
 
 -- --------------------------------------------------------
 
@@ -98,8 +188,9 @@ INSERT INTO `carteira_acoes` (`id`, `id_carteira`, `acao`, `quantidade`, `porcen
 (17, 7, 'fgh', 0, 25),
 (18, 7, 'hyt', 0, 25),
 (19, 7, 'hhhh', 0, 25),
-(20, 1, 'VALE3', 200, 70),
-(21, 1, 'PETR4', 100, 30);
+(49, 1, 'BPAN4', 222, 25),
+(50, 1, 'BRKM5', 0, 30),
+(51, 1, 'CRFB3', 0, 45);
 
 -- --------------------------------------------------------
 
@@ -128,8 +219,8 @@ INSERT INTO `operacoes` (`id`, `id_carteira`, `id_acao`, `lado`, `quantidade`, `
 (15, 1, 3, 2, 200, NULL),
 (20, 1, 2, 2, 22, '0000-00-00 00:00:00'),
 (21, 1, 3, 1, 12, '2022-11-09 20:13:25'),
-(22, 1, 20, 1, 200, '2022-11-12 15:14:47'),
-(23, 1, 21, 1, 100, '2022-11-12 15:37:42');
+(0, 1, 43, 1, 2000, '2022-11-10 20:09:54'),
+(0, 1, 46, 1, 222, '2022-11-10 20:11:04');
 
 -- --------------------------------------------------------
 
@@ -143,17 +234,6 @@ CREATE TABLE `token` (
   `token` varchar(100) NOT NULL,
   `usada` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `token`
---
-
-INSERT INTO `token` (`id`, `id_analista`, `token`, `usada`) VALUES
-(1, 1, '123', '2022-10-26'),
-(2, 1, '124', NULL),
-(3, 1, '125', '2022-10-26'),
-(5, 7, '586636', NULL),
-(6, 7, '584375', '2022-11-09');
 
 -- --------------------------------------------------------
 
@@ -171,18 +251,15 @@ CREATE TABLE `usuario` (
   `endereco` varchar(60) NOT NULL,
   `celular` varchar(25) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `senha` varchar(100) NOT NULL,
-  `id_token` int(11) NOT NULL
+  `senha` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `tipo`, `nome`, `sobrenome`, `rg`, `cpf`, `endereco`, `celular`, `email`, `senha`, `id_token`) VALUES
-(1, 1, 'VITOR', 'DA SILVA', '3213213213', '', 'asdasddasads', '42142214', 'a@a.com', '1234', 5),
-(7, 2, 'token', 'token', 'token', '', 'token', 'token', 'token@token.com', 'token', 0),
-(8, 1, 'Gelson', 'da Luz', '4845656564', '', 'asdsaasd', '556165156156', 'gelson@teste.com', '12345', 6);
+INSERT INTO `usuario` (`id`, `tipo`, `nome`, `sobrenome`, `rg`, `cpf`, `endereco`, `celular`, `email`, `senha`) VALUES
+(1, 1, 'teste', 'sobrenome', '1234123412', '12312312312', 'Rua teste', '51 9 99999999', 'a@a.com', '1234');
 
 --
 -- Indexes for dumped tables
@@ -195,21 +272,9 @@ ALTER TABLE `acoes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `carteira`
---
-ALTER TABLE `carteira`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `carteira_acoes`
 --
 ALTER TABLE `carteira_acoes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `operacoes`
---
-ALTER TABLE `operacoes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -232,37 +297,25 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `acoes`
 --
 ALTER TABLE `acoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `carteira`
---
-ALTER TABLE `carteira`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `carteira_acoes`
 --
 ALTER TABLE `carteira_acoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT for table `operacoes`
---
-ALTER TABLE `operacoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
