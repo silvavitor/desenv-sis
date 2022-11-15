@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2022 at 05:13 AM
+-- Generation Time: Nov 15, 2022 at 05:21 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.15
 
@@ -149,7 +149,7 @@ CREATE TABLE `carteira` (
 
 INSERT INTO `carteira` (`id`, `id_cliente`, `descricao`) VALUES
 (2, 2, '123'),
-(3, 1, 'Teste');
+(5, 1, 'Teste');
 
 -- --------------------------------------------------------
 
@@ -171,7 +171,9 @@ CREATE TABLE `carteira_acoes` (
 
 INSERT INTO `carteira_acoes` (`id`, `id_carteira`, `acao`, `quantidade`, `porcentagem_objetivo`) VALUES
 (55, 0, 'VALE3', 100, 30),
-(56, 0, 'BBAS3', 500, 70);
+(56, 0, 'BBAS3', 500, 70),
+(57, 5, 'RRRP3', 200, 90),
+(58, 5, 'BRKM5', 150, 10);
 
 -- --------------------------------------------------------
 
@@ -195,7 +197,10 @@ CREATE TABLE `operacoes` (
 INSERT INTO `operacoes` (`id`, `id_carteira`, `id_acao`, `lado`, `quantidade`, `data`) VALUES
 (1, 0, 55, 1, 200, '2022-11-14 19:07:59'),
 (2, 0, 56, 1, 500, '2022-11-14 19:08:07'),
-(3, 0, 55, 2, -100, '2022-11-14 19:08:12');
+(3, 0, 55, 2, -100, '2022-11-14 19:08:12'),
+(4, 5, 57, 1, 220, '2022-11-14 19:15:16'),
+(5, 5, 58, 1, 150, '2022-11-14 19:15:22'),
+(6, 5, 57, 2, -20, '2022-11-14 19:15:26');
 
 -- --------------------------------------------------------
 
@@ -290,19 +295,19 @@ ALTER TABLE `acoes`
 -- AUTO_INCREMENT for table `carteira`
 --
 ALTER TABLE `carteira`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `carteira_acoes`
 --
 ALTER TABLE `carteira_acoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `operacoes`
 --
 ALTER TABLE `operacoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `token`
