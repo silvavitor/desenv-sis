@@ -217,7 +217,7 @@ if (array_key_exists("id", $_GET)) {
                 <select id="acao<?=$i?>" class="form-select pt-2" name="acoes[<?=$i-1?>]">
                   <?php foreach ($listAcoes as $acao) { ?>                  
                       
-                    <option value="<?=$acao['papel'];?>" <?=(($id_carteira != 0) && ($acao['papel'] == $acoes[$i-1])) ? "selected" : "";?> ><?=$acao['papel'];?></option>
+                    <option value="<?=$acao['papel'];?>" <?=(($id_carteira != 0) && (array_key_exists($i-1, $acoes)) && ($acao['papel'] == $acoes[$i-1])) ? "selected" : "";?> ><?=$acao['papel'];?></option>
                       
                   <?php } ?>
                     
@@ -226,7 +226,7 @@ if (array_key_exists("id", $_GET)) {
 
               &nbsp&nbsp
               <div class="form-floating col">        
-                <input type="text" class="form-control" id="porcentagem<?=$i?>" placeholder="porcentagem<?=$i?>" name="porcentagem[<?=$i-1?>]" value="<?=$id_carteira != 0 ? $porcentagem[$i-1] : "";?>">
+                <input type="text" class="form-control" id="porcentagem<?=$i?>" placeholder="porcentagem<?=$i?>" name="porcentagem[<?=$i-1?>]" value="<?=($id_carteira != 0  && (array_key_exists($i-1, $porcentagem))) ? $porcentagem[$i-1] : "";?>">
                 <label for="porcentagem<?=$i?>">Porcentagem alvo</label>
               </div>
             </div>
