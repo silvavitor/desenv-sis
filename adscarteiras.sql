@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2022 at 05:03 AM
+-- Generation Time: Nov 15, 2022 at 05:13 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.15
 
@@ -148,12 +148,8 @@ CREATE TABLE `carteira` (
 --
 
 INSERT INTO `carteira` (`id`, `id_cliente`, `descricao`) VALUES
-(1, 1, 'Teste 1'),
 (2, 2, '123'),
-(4, 1, 'teste 2'),
-(5, 1, 'teste 3'),
-(6, 1, 'teste4'),
-(7, 1, 'teste 6');
+(3, 1, 'Teste');
 
 -- --------------------------------------------------------
 
@@ -174,23 +170,8 @@ CREATE TABLE `carteira_acoes` (
 --
 
 INSERT INTO `carteira_acoes` (`id`, `id_carteira`, `acao`, `quantidade`, `porcentagem_objetivo`) VALUES
-(6, 4, 'aaaa', 0, 33),
-(7, 4, 'bbbb', 0, 33),
-(8, 4, 'ccccc', 0, 34),
-(9, 5, 'aaa', 0, 25),
-(10, 5, 'bbb', 0, 25),
-(11, 5, 'ccc', 0, 25),
-(12, 5, 'ddd', 0, 25),
-(13, 6, 'fff', 0, 25),
-(14, 6, 'ddd', 0, 35),
-(15, 6, 'fasa', 0, 40),
-(16, 7, 'asd', 0, 25),
-(17, 7, 'fgh', 0, 25),
-(18, 7, 'hyt', 0, 25),
-(19, 7, 'hhhh', 0, 25),
-(49, 1, 'BPAN4', 222, 25),
-(50, 1, 'BRKM5', 0, 30),
-(51, 1, 'CRFB3', 0, 45);
+(55, 0, 'VALE3', 100, 30),
+(56, 0, 'BBAS3', 500, 70);
 
 -- --------------------------------------------------------
 
@@ -212,15 +193,9 @@ CREATE TABLE `operacoes` (
 --
 
 INSERT INTO `operacoes` (`id`, `id_carteira`, `id_acao`, `lado`, `quantidade`, `data`) VALUES
-(11, 1, 2, 1, 123123, NULL),
-(12, 1, 1, 1, 123, NULL),
-(13, 1, 3, 1, 5555, NULL),
-(14, 1, 3, 2, 1111, NULL),
-(15, 1, 3, 2, 200, NULL),
-(20, 1, 2, 2, 22, '0000-00-00 00:00:00'),
-(21, 1, 3, 1, 12, '2022-11-09 20:13:25'),
-(0, 1, 43, 1, 2000, '2022-11-10 20:09:54'),
-(0, 1, 46, 1, 222, '2022-11-10 20:11:04');
+(1, 0, 55, 1, 200, '2022-11-14 19:07:59'),
+(2, 0, 56, 1, 500, '2022-11-14 19:08:07'),
+(3, 0, 55, 2, -100, '2022-11-14 19:08:12');
 
 -- --------------------------------------------------------
 
@@ -272,9 +247,21 @@ ALTER TABLE `acoes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `carteira`
+--
+ALTER TABLE `carteira`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `carteira_acoes`
 --
 ALTER TABLE `carteira_acoes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `operacoes`
+--
+ALTER TABLE `operacoes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -300,10 +287,22 @@ ALTER TABLE `acoes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
+-- AUTO_INCREMENT for table `carteira`
+--
+ALTER TABLE `carteira`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `carteira_acoes`
 --
 ALTER TABLE `carteira_acoes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
+-- AUTO_INCREMENT for table `operacoes`
+--
+ALTER TABLE `operacoes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `token`
