@@ -64,11 +64,8 @@ $queryToken = mysqli_query($mysqli,
             
                 if ($queryCliente && ($result = mysqli_fetch_assoc($queryCliente))) {
               ?>
-                <h2><?=$result['nome'] . ' ' . $result['sobrenome'];?></h2>
+                <h2><?=$result['nome'];?></h2>
                 <br>
-                <p>Endereço: <?=$result['endereco'];?></p>
-                <p>Email: <?=$result['email'];?></p>
-                <p>RG: <?=$result['rg'];?></p>
               <?php } else {
                 header('location: list-clientes.php');
               } ?>
