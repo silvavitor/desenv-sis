@@ -7,43 +7,30 @@ if (!(array_key_exists("id_token", $_SESSION) and $_SESSION['id_token'] <> '')) 
 
 require_once("./banco.php");
 $erroEmailJaExiste = false;
-$erroRGJaExiste = false;
 $erroCamposObrigatorios = false;
 $erroDesconhecido = false;
 $validarCampos = false;
 
 $nome      = '';
-$sobrenome = '';
-$rg        = '';
-$endereco  = '';
-$celular   = '';
+$emailSec  = '';
 $email     = '';
 $senha     = '';
 $id_token  = $_SESSION['id_token'];
 
 if ((array_key_exists("nome", $_POST)) && 
-    (array_key_exists("sobrenome", $_POST)) &&
-    (array_key_exists("rg", $_POST)) &&
-    (array_key_exists("endereco", $_POST)) &&
-    (array_key_exists("celular", $_POST)) &&
+    (array_key_exists("emailSec", $_POST)) &&
     (array_key_exists("email", $_POST)) &&
     (array_key_exists("senha", $_POST))) 
 {
   $nome      = $_POST["nome"];
-  $sobrenome = $_POST["sobrenome"];
-  $rg        = $_POST["rg"];
-  $endereco  = $_POST["endereco"];
-  $celular   = $_POST["celular"];
+  $emailSec = $_POST["emailSec"];
   $email     = $_POST["email"];
   $senha     = $_POST["senha"];
   $validarCampos = true;
 }
 
 if (($nome      != '') &&
-    ($sobrenome != '') &&
-    ($rg        != '') &&
-    ($endereco  != '') &&
-    ($celular   != '') &&
+    ($emailSec != '') &&
     ($email     != '') &&
     ($senha     != '')) 
 { 
@@ -55,18 +42,11 @@ if (($nome      != '') &&
     $erroEmailJaExiste = true;
   }
 
-  $queryRG = mysqli_query($mysqli,
-    "SELECT COUNT(id) as qtd FROM usuario WHERE rg='$rg'"
-  );
 
-  if ($queryRG && ($result = mysqli_fetch_assoc($queryRG)) && ($result['qtd'] > 0)) {
-    $erroRGJaExiste = true;
-  }
-
-  if (!$erroEmailJaExiste && !$erroRGJaExiste) {
+  if (!$erroEmailJaExiste) {
     $query = mysqli_query($mysqli, 
-      "INSERT INTO usuario (tipo, nome, sobrenome, rg, endereco, celular, email, senha, id_token)
-       VALUES ('1', '$nome', '$sobrenome', '$rg', '$endereco', '$celular', '$email', '$senha', $id_token)"
+      "INSERT INTO usuario (tipo, nome, emailSec, email, senha, id_token)
+       VALUES ('1', '$nome', '$emailSec', '$email', '$senha', $id_token)"
     );
 
     if ($query) {
@@ -142,64 +122,49 @@ if (($nome      != '') &&
           </div>
         <?php } ?>
 
-        <?php if ($erroRGJaExiste) { ?>
-          <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
-            <span>RG já cadastrado!</span>
-          </div>
-        <?php } ?>
         
+        &nbsp&nbsp
         <!-- 
-          Nome e sobrenome 
+          Nome
         -->
         <div class="row mb-3">
-          <div class="form-floating  col">        
+          <div class="form-floating col-12">        
             <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome">
             <label for="nome">Nome</label>
           </div>
           &nbsp&nbsp
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="sobrenome" placeholder="Sobrenome" name="sobrenome">
-            <label for="sobrenome">Sobrenome</label>
-          </div>
         </div>
         <!-- 
-          RG e CPF 
+          Email
         -->
         <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="rg" placeholder="rg" name="rg">
-            <label for="rg">RG</label>
-          </div>
-        </div>
-        <!-- 
-          Endereço e Celular
-        -->
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="endereco" placeholder="endereco" name="endereco">
-            <label for="endereco">Endereco Completo</label>
-          </div>
-          &nbsp&nbsp
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="celular" placeholder="celular" name="celular">
-            <label for="celular">Celular</label>
-          </div>
-        </div>
-        <!-- 
-          Email e Senha
-        -->
-        <div class="row mb-3">
-          <div class="form-floating col">        
+          <div class="form-floating col-12">        
             <input type="text" class="form-control" id="email" placeholder="email" name="email">
             <label for="email">E-mail</label>
           </div>
           &nbsp&nbsp
-          <div class="form-floating col">        
+        </div>
+        <!-- 
+          email alternativo
+        -->
+        <div class="row mb-3">
+          <div class="form-floating col-12">        
+            <input type="text" class="form-control" id="emailSec" placeholder="emailSec" name="emailSec">
+            <label for="emailSec">E-mail alternativo</label>
+          </div>
+        </div>
+        &nbsp&nbsp
+        <!-- 
+          senha
+        -->
+        <div class="row mb-3">
+          <div class="form-floating col-12">        
             <input type="password" class="form-control" id="senha" placeholder="senha" name="senha">
             <label for="Senha">Senha</label>
           </div>
         </div>
       </div>
+      &nbsp&nbsp
 
       <button class="w-100 btn btn-lg btn-success" type="submit">Cadastrar conta</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2022</p>

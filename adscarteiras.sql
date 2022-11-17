@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 15-Nov-2022 às 00:12
--- Versão do servidor: 10.4.22-MariaDB
--- versão do PHP: 8.0.15
+-- Tempo de geração: 17-Nov-2022 às 02:23
+-- Versão do servidor: 10.4.25-MariaDB
+-- versão do PHP: 7.4.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -221,7 +221,10 @@ CREATE TABLE `token` (
 
 INSERT INTO `token` (`id`, `id_analista`, `token`, `usada`) VALUES
 (1, 3, '335966', NULL),
-(2, 3, '802263', '2022-11-14');
+(2, 3, '802263', '2022-11-14'),
+(3, 3, '204666', '2022-11-16'),
+(4, 3, '907559', '2022-11-16'),
+(5, 3, '759152', '2022-11-16');
 
 -- --------------------------------------------------------
 
@@ -232,12 +235,8 @@ INSERT INTO `token` (`id`, `id_analista`, `token`, `usada`) VALUES
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
   `tipo` tinyint(4) NOT NULL,
-  `nome` varchar(100) NOT NULL,
-  `sobrenome` varchar(100) NOT NULL,
-  `rg` varchar(10) NOT NULL,
-  `cpf` varchar(25) NOT NULL,
-  `endereco` varchar(60) NOT NULL,
-  `celular` varchar(25) NOT NULL,
+  `nome` varchar(20) NOT NULL,
+  `emailSec` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `senha` varchar(100) NOT NULL,
   `id_token` int(10) NOT NULL
@@ -247,10 +246,13 @@ CREATE TABLE `usuario` (
 -- Extraindo dados da tabela `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `tipo`, `nome`, `sobrenome`, `rg`, `cpf`, `endereco`, `celular`, `email`, `senha`, `id_token`) VALUES
-(1, 1, 'teste', 'sobrenome', '1234123412', '12312312312', 'Rua teste', '51 9 99999999', 'a@a.com', '1234', 1),
-(3, 2, 'analista', 'analista', '777777777', '777777777777', 'aaaaaaa', '2231231231', 'analista@teste.com', '123', 0),
-(4, 1, 'teste', 'teste', '111111', '', 'asdasdasd', '111111', 'teste@teste.com', 'teste', 2);
+INSERT INTO `usuario` (`id`, `tipo`, `nome`, `emailSec`, `email`, `senha`, `id_token`) VALUES
+(1, 1, '', 'teste', 'a@a.com', '1234', 1),
+(3, 2, '', 'analista', 'analista@teste.com', '123', 0),
+(4, 1, '', 'teste', 'teste@teste.com', 'teste', 2),
+(5, 1, 'giovani', 'h@h.com', 'g@g.com', '123', 3),
+(6, 1, 'teste de campos', 'g@ggg.com', 'teste@123.com', 'teste', 4),
+(7, 1, 'teste FInal', 'teste2@final2.com', 'teste@final.com', 'teste', 5);
 
 --
 -- Índices para tabelas despejadas
@@ -324,13 +326,13 @@ ALTER TABLE `operacoes`
 -- AUTO_INCREMENT de tabela `token`
 --
 ALTER TABLE `token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -23,61 +23,52 @@
   <main class="form-signin w-100 m-auto">
     <form>
       <h1 class="h3 mt-3 mb-3 fw-normal">Alterar dados</h1>
-      
+
       <div class="container">
+        
+        &nbsp&nbsp
         <!-- 
-          Nome e sobrenome 
+          Nome
         -->
         <div class="row mb-3">
-          <div class="form-floating  col">        
-            <input type="text" class="form-control" id="nome" placeholder="Nome">
+          <div class="form-floating col-12">        
+            <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome">
             <label for="nome">Nome</label>
           </div>
           &nbsp&nbsp
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="sobrenome" placeholder="Sobrenome">
-            <label for="sobrenome">Sobrenome</label>
-          </div>
         </div>
         <!-- 
-          RG e CPF 
+          Email
         -->
         <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="rg" placeholder="rg">
-            <label for="rg">RG</label>
-          </div>
-          &nbsp&nbsp
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="cpf" placeholder="cpf">
-            <label for="cpf">CPF</label>
-          </div>
-        </div>
-        <!-- 
-          Endere�o e Celular
-        -->
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="endereco" placeholder="endereco">
-            <label for="endereco">Endereco Completo</label>
-          </div>
-          &nbsp&nbsp
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="celular" placeholder="celular">
-            <label for="celular">Celular</label>
-          </div>
-        </div>
-        <!-- 
-          Email e Senha
-        -->
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="email" placeholder="email">
+          <div class="form-floating col-12">        
+            <input type="text" class="form-control" id="email" placeholder="email" name="email">
             <label for="email">E-mail</label>
+          </div>
+          &nbsp&nbsp
+        </div>
+        <!-- 
+          email alternativo
+        -->
+        <div class="row mb-3">
+          <div class="form-floating col-12">        
+            <input type="text" class="form-control" id="emailSec" placeholder="emailSec" name="emailSec">
+            <label for="emailSec">E-mail alternativo</label>
+          </div>
+        </div>
+        &nbsp&nbsp
+        <!-- 
+          senha
+        -->
+        <div class="row mb-3">
+          <div class="form-floating col-12">        
+            <input type="password" class="form-control" id="senha" placeholder="senha" name="senha">
+            <label for="Senha">Senha</label>
           </div>
         </div>
       </div>
-      <a class="w-100 mb-5 btn btn-lg btn-link" href="alterar-senha.php">Alterar senha</a>
+      &nbsp&nbsp
+
       <button class="w-100 btn btn-lg btn-success" type="submit">Confirmar</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     </form>
