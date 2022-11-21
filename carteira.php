@@ -136,7 +136,7 @@ foreach ($tabela as $acao => $dados) {
     $participacao = 0;
   }
 
-  $distancia = $dados["objetivo"] - $participacao;
+  $distancia = $participacao - $dados["objetivo"];
 
   $tabela[$acao]["participacao"] = $participacao;
   $tabela[$acao]["distancia_objetivo"] = $distancia;
