@@ -103,7 +103,9 @@ $queryAcoes = mysqli_query($mysqli,
   FROM 
     carteira_acoes ca, acoes a
   WHERE 
-    id_carteira = $id_carteira AND a.papel = ca.acao"
+    id_carteira = $id_carteira AND a.papel = ca.acao
+  ORDER BY
+    ca.acao"
 );
 
 if (array_key_exists("segmento", $_GET)) {
@@ -177,7 +179,7 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
 
     <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">    
     <!-- Custom styles for this template -->
-    <!-- <link href="home.css" rel="stylesheet"> -->
+    <link href="carteira.css" rel="stylesheet">
   </head>
   <body class="bg-light">
     <?php include_once('header.php'); ?> 
@@ -200,33 +202,40 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
         </div>
       </div>
 
-      <!-- Investimento, Add operação e histórico de operações -->
-      <?php if ($tipo_usuario == 1) { ?>
       <div class="w-100 row">
         <div class="h-100 p-5 row">
+          <!-- Gráfico -->
           <div class="col">
-            <a href="investimento.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar investimento</button></a>
+            <canvas id="graficoAtivos"></canvas>
           </div>
-
-          <div class="col">
-            <a href="add-operacao.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar operação</button></a>
-          </div>
-
-          <div class="col">
-            <a href="historico-operacoes.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Histórico de operações</button></a>
-          </div>
+          <!-- Investimento, Add operação e histórico de operações -->
+          <?php if ($tipo_usuario == 1) { ?>
+            <div class="col interacoesContainer">
+              <div class="interacoes mt-4">
+                <div class="mb-4">
+                  <a href="investimento.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar investimento</button></a>
+                </div>
+                <div class="mb-4">
+                  <a href="add-operacao.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar operação</button></a>
+                </div>
+                <div class="mb-4">
+                  <a href="historico-operacoes.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Histórico de operações</button></a>
+                </div>
+              </div>
+            </div>
+          <?php } ?>
         </div>
       </div>
-      <?php } ?>
 
       <!-- Filtro -->
       <h4 class="mb-3 fw-normal">Filtro:</h4>
       <div class="w-100 row mb-5 mt-3">
         <div class="form-floating col">        
           <select id="filtro" class="form-select pt-2">
-          <?php foreach ($segmentos as $segmento) { ?>
+            <option value="0" <?=($filtro == "" ? "selected" : "")?>>Todos os segmentos</option>
+            <?php foreach ($segmentos as $segmento) { ?>
               <option value="<?=$segmento?>" <?=($segmento == $filtro ? "selected" : "")?>><?=$segmento?></option>
-          <?php } ?> 
+            <?php } ?> 
           </select>
         </div>
         <div class="form-floating col-2">        
@@ -249,12 +258,12 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
 
         <?php foreach ($tabela as $ativo => $dados) { ?>
           <div class="row mb-3 bg-secondary bg-gradient p-3 rounded text-white">
-            <div class="col"><span><?=$ativo;?></span></div>
+            <div class="col"><span class="ativos"><?=$ativo;?></span></div>
             <div class="col"><span><?=$dados["segmento"];?></span></div>
             <div class="col"><span><?=$dados['qtd'];?></span></div>
             <div class="col"><span>R$ <?=number_format((float)$dados['cotacao_atual'], 2, ',', '');?></span></div>
             <div class="col"><span>R$ <?=number_format((float)$dados['patrimonio'], 2, ',', '');?></span></div>
-            <div class="col"><span><?=number_format((float)$dados['participacao'], 2, ',', '');?>%</span></div>
+            <div class="col"><span class="participacao"><?=number_format((float)$dados['participacao'], 2, ',', '');?>%</span></div>
             <div class="col"><span><?=number_format((float)$dados['objetivo'], 2, ',', '');;?>%</span></div>
             <div class="col"><span><?=$dados['distancia_objetivo'] > 0 
               ? "+".number_format((float)$dados['distancia_objetivo'], 2, ',', '')
@@ -265,12 +274,47 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
     </main>
 
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/dist/js/chart.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
     <script>
       function filtrarSegmento() {
         let filtro = document.getElementById("filtro");
         let selected = filtro.options[filtro.selectedIndex].value;
-        window.location.href = "carteira.php?id=1&segmento=" + selected;
+        if (selected == 0) {
+          window.location.href = "carteira.php?id="+<?=$id_carteira?>;
+        } else {
+          window.location.href = "carteira.php?id="+<?=$id_carteira?>+"&segmento=" + selected;
+        }
       }
+
+      const ctx = document.getElementById('graficoAtivos');
+
+      ativos = [];
+      participacoes = [];
+
+      const ativosHTML = document.getElementsByClassName('ativos');
+      for (let ativo of ativosHTML) {
+        ativos.push(ativo.innerHTML);
+      }
+      const participacaoHTML = document.getElementsByClassName('participacao');
+      for (let participacao of participacaoHTML) {
+        participacoes.push(parseFloat(participacao.innerHTML.replace("%", "")));
+      }
+
+      const data = {
+        labels: ativos,
+        datasets: [{
+          label: 'Ativos',
+          data: participacoes,
+          hoverOffset: 4
+        }]
+      };
+
+      console.log(data);
+      new Chart(ctx, {
+        type: 'pie',
+        data: data,
+      });
     </script>
   </body>
 </html>

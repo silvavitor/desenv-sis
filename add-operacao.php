@@ -116,7 +116,7 @@ if ((array_key_exists("lado", $_POST)) &&
           <div class="form-floating col">        
             <select id="acao" class="form-select pt-2" name="acao">
             <?php 
-              $queryAcoes = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira='$id_carteira'");
+              $queryAcoes = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira='$id_carteira' ORDER BY acao");
               
               if ($queryAcoes && mysqli_num_rows($queryAcoes) > 0) {
                 while ($result = mysqli_fetch_assoc($queryAcoes)) {
