@@ -201,7 +201,7 @@ if (array_key_exists("id", $_GET)) {
         <div class="container">
 
           <?php 
-          $queryAcoes = mysqli_query($mysqli, "SELECT * FROM acoes");
+          $queryAcoes = mysqli_query($mysqli, "SELECT * FROM acoes ORDER BY papel");
           $listAcoes = [];
 
           if ($queryAcoes && mysqli_num_rows($queryAcoes) > 0) {

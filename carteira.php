@@ -86,22 +86,29 @@ $queryCarteira = mysqli_query($mysqli,
 
 // Estrutura da $tabela
 // - qtd (banco)
+// - segmento
 // - cotacao_atual (api)
 // - patrimonio (qtd * cotacao_atual)
 // - participacao 
 // - objetivo (banco)
 // - distancia_objetivo (objetivo - participacao)'
 $tabela = [];
+$segmento = [];
 $patrimonio_total = 0;
+$filtro = '';
 
 $queryAcoes = mysqli_query($mysqli,
   "SELECT 
-    * 
+    ca.*, a.segmento
   FROM 
-    carteira_acoes
+    carteira_acoes ca, acoes a
   WHERE 
-    id_carteira = $id_carteira"
+    id_carteira = $id_carteira AND a.papel = ca.acao"
 );
+
+if (array_key_exists("segmento", $_GET)) {
+  $filtro = urldecode($_GET["segmento"]);
+}
 
 while (($acao = mysqli_fetch_assoc($queryAcoes))) {
   ////////////////////////////////////////////////////////////////////
@@ -117,14 +124,17 @@ while (($acao = mysqli_fetch_assoc($queryAcoes))) {
 
   $preco = json_decode($result)->results->$ativo->price;
 
-  $tabela[$acao['acao']] = [
-    "qtd"                => $acao["quantidade"],
-    "cotacao_atual"      => $preco,
-    "patrimonio"         => $acao["quantidade"] * $preco,
-    "participacao"       => 0,
-    "objetivo"           => $acao["porcentagem_objetivo"],
-    "distancia_objetivo" => 0,
-  ];
+  if (($filtro == '') or ($filtro == $acao["segmento"])) {
+    $tabela[$acao['acao']] = [
+      "qtd"                => $acao["quantidade"],
+      "segmento"           => $acao["segmento"],
+      "cotacao_atual"      => $preco,
+      "patrimonio"         => $acao["quantidade"] * $preco,
+      "participacao"       => 0,
+      "objetivo"           => $acao["porcentagem_objetivo"],
+      "distancia_objetivo" => 0,
+    ];
+  }
 
   $patrimonio_total += $acao["quantidade"] * $preco;
 }
@@ -141,6 +151,20 @@ foreach ($tabela as $acao => $dados) {
   $tabela[$acao]["participacao"] = $participacao;
   $tabela[$acao]["distancia_objetivo"] = $distancia;
 }
+
+$querySegmentos = mysqli_query($mysqli,
+  "SELECT 
+    DISTINCT a.segmento
+  FROM 
+    carteira_acoes ca, acoes a
+  WHERE 
+    id_carteira = $id_carteira AND a.papel = ca.acao"
+);
+
+while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
+  $segmentos[] = $consulta['segmento'];
+}
+
 
 ?>
 <!doctype html>
@@ -199,14 +223,14 @@ foreach ($tabela as $acao => $dados) {
       <h4 class="mb-3 fw-normal">Filtro:</h4>
       <div class="w-100 row mb-5 mt-3">
         <div class="form-floating col">        
-          <select id="lado" class="form-select pt-2" aria-label="Default select example">
-            <option selected value="1">Segmento 1</option>
-            <option value="2">Segmento 2</option>
-            <option value="3">Segmento 3</option>
+          <select id="filtro" class="form-select pt-2">
+          <?php foreach ($segmentos as $segmento) { ?>
+              <option value="<?=$segmento?>" <?=($segmento == $filtro ? "selected" : "")?>><?=$segmento?></option>
+          <?php } ?> 
           </select>
         </div>
         <div class="form-floating col-2">        
-          <button class="w-100 h-100 btn btn-lg btn-success" type="submit">Filtrar</button>
+          <button onclick="filtrarSegmento()" class="w-100 h-100 btn btn-lg btn-success">Filtrar</button>
         </div>
       </div>
 
@@ -226,18 +250,27 @@ foreach ($tabela as $acao => $dados) {
         <?php foreach ($tabela as $ativo => $dados) { ?>
           <div class="row mb-3 bg-secondary bg-gradient p-3 rounded text-white">
             <div class="col"><span><?=$ativo;?></span></div>
-            <div class="col"><span>XXXXXX</span></div>
+            <div class="col"><span><?=$dados["segmento"];?></span></div>
             <div class="col"><span><?=$dados['qtd'];?></span></div>
             <div class="col"><span>R$ <?=number_format((float)$dados['cotacao_atual'], 2, ',', '');?></span></div>
             <div class="col"><span>R$ <?=number_format((float)$dados['patrimonio'], 2, ',', '');?></span></div>
             <div class="col"><span><?=number_format((float)$dados['participacao'], 2, ',', '');?>%</span></div>
             <div class="col"><span><?=number_format((float)$dados['objetivo'], 2, ',', '');;?>%</span></div>
-            <div class="col"><span><?=number_format((float)$dados['distancia_objetivo'], 2, ',', '');?>%</span></div>
+            <div class="col"><span><?=$dados['distancia_objetivo'] > 0 
+              ? "+".number_format((float)$dados['distancia_objetivo'], 2, ',', '')
+              : number_format((float)$dados['distancia_objetivo'], 2, ',', '');?>%</span></div>
           </div>
         <?php } ?>        
      </div>
     </main>
 
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function filtrarSegmento() {
+        let filtro = document.getElementById("filtro");
+        let selected = filtro.options[filtro.selectedIndex].value;
+        window.location.href = "carteira.php?id=1&segmento=" + selected;
+      }
+    </script>
   </body>
 </html>
