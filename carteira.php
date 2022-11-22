@@ -205,7 +205,7 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
       <div class="w-100 row">
         <div class="h-100 p-5 row">
           <!-- Gráfico -->
-          <div class="col">
+          <div class="col graficoContainer">
             <canvas id="graficoAtivos"></canvas>
           </div>
           <!-- Investimento, Add operação e histórico de operações -->

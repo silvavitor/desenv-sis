@@ -1,3 +1,10 @@
+.graficoContainer {
+  max-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .interacoesContainer {
   display: flex;
   justify-content: center;
