@@ -25,26 +25,12 @@
   <main class="form-signin w-100 m-auto">
     <form>
       <h1 class="h3 mt-4 mb-3 fw-normal">Alterar senha</h1>
-      
+      &nbsp&nbsp
       <div class="container">
         <div class="row mb-3">
-          <div class="form-floating  col">        
-            <input type="text" class="form-control" id="senhaAntiga" placeholder="Senha antiga">
-            <label for="senhaAntiga">Senha antiga</label>
-          </div>
-          &nbsp&nbsp
-        </div>
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="senhaNova" placeholder="Nova senha">
-            <label for="senhaNova">Nova senha</label>
-          </div>
-          &nbsp&nbsp
-        </div>
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" id="confirmaSenhaNova" placeholder="Confirmar nova senha">
-            <label for="confirmaSenhaNova">Confirmar nova senha</label>
+          <div class="form-floating col-12">        
+            <input type="text" class="form-control" id="emailSec" placeholder="emailSec">
+            <label for="emailSec">E-mail secundário</label>
           </div>
           &nbsp&nbsp
         </div>
