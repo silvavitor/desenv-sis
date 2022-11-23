@@ -189,12 +189,13 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
         <div class="row mb-3">
           <div class="col-md-12">
             <div class="h-100 p-5 text-white bg-success bg-gradient rounded-3 row">
-              <div class="col-10">
+              <div class="col-7">
                 <h2><?=$descricao?></h2>
               </div>
               <?php if ($tipo_usuario == 1) { ?>
-                <div class="col-2 d-flex">
-                  <a href="carteira-info-1.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary">Editar</button></a>
+                <div class="col-5 d-flex">
+                  <a href="carteira-ativos.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary">Editar Ativos</button></a>
+                  <a href="carteira-edit.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary">Editar Carteira</button></a>
                   <a href="carteira-excluir.php?id=<?=$id_carteira?>"><button class="w-100 btn btn-lg btn-danger">Excluir</button></a>
                 </div>
               <?php } ?>
