@@ -3,14 +3,47 @@
 require_once('session-cliente.php');
 require_once('banco.php');
 
+$erroSenha = false;
+$erroSenhaNovaDiferente = false;
+$erroCamposObrigatorios = false;
 
+$id_cliente = $_SESSION['id'];
 
+if ((array_key_exists("senhaNova", $_POST)) && 
+    (array_key_exists("antigaSenha", $_POST)) &&
+    (array_key_exists("senhaNovaConfirma", $_POST))) {
 
+  $senhaNova = $_POST["senhaNova"];
+  $senhaAntiga = $_POST["antigaSenha"];
+  $senhaConfirma = $_POST["senhaNovaConfirma"];
+  
+  if (($senhaNova      != '') &&
+      ($senhaAntiga    != '') &&
+      ($senhaConfirma  != '')) 
+    {
+    $querySenha = mysqli_query($mysqli,
+      "SELECT COUNT(id) as qtd FROM usuario WHERE senha='$senhaAntiga' AND id=$id_cliente"
+    );
 
+    if ($querySenha && ($result = mysqli_fetch_assoc($querySenha)) && ($result['qtd'] == 0)) {
+      $erroSenha = true;
+    }
+
+    if ($senhaNova != $senhaConfirma) {
+      $erroSenhaNovaDiferente = true;
+    }
+    
+    if ((!$erroSenha) && (!$erroSenhaNovaDiferente)) {
+      $query = mysqli_query($mysqli, "UPDATE usuario 
+      SET senha='$senhaNova'
+      WHERE id=$id_cliente");
+      header('location: home.php');
+    } 
+  } else {
+    $erroCamposObrigatorios = true;
+  }
+}
 ?>
-
-
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -36,10 +69,29 @@ require_once('banco.php');
 <body class="text-center bg-light bodycss">  
   <?php include_once('header.php'); ?>  
   <main class="form-signin w-100 m-auto">
-    <form>
+    <form action="alterar-senha.php" method="post">
       <h1 class="h3 mt-4 mb-3 fw-normal">Alterar senha</h1>
       &nbsp&nbsp
       <div class="container">
+
+      <?php if ($erroSenha) { ?>
+          <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+            <span>Senha atual incorreta!</span>
+          </div>
+      <?php } ?>
+
+      <?php if ($erroCamposObrigatorios) { ?>
+          <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+            <span>Preencha todos os campos!</span>
+          </div>
+      <?php } ?>
+        
+      <?php if ($erroSenhaNovaDiferente) { ?>
+          <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+            <span>Senha nova diferente da confirmação!</span>
+          </div>
+      <?php } ?>
+
         <div class="row mb-3">
           <div class="form-floating col">        
             <input type="password" name="antigaSenha" class="form-control" id="senhaAntiga" placeholder="senhaAntiga">
