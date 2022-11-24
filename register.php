@@ -10,6 +10,9 @@ $erroEmailJaExiste = false;
 $erroCamposObrigatorios = false;
 $erroDesconhecido = false;
 $validarCampos = false;
+$erroEmailSecJaExiste = false;
+$erroEmailsIguais = false;
+
 
 $nome      = '';
 $emailSec  = '';
@@ -35,15 +38,44 @@ if (($nome      != '') &&
     ($senha     != '')) 
 { 
   $queryEmail = mysqli_query($mysqli,
-    "SELECT COUNT(id) as qtd FROM usuario WHERE email='$email'"
-  );
+  "SELECT COUNT(id) as qtd FROM usuario WHERE email='$email'"
+);
 
-  if ($queryEmail && ($result = mysqli_fetch_assoc($queryEmail)) && ($result['qtd'] > 0)) {
-    $erroEmailJaExiste = true;
-  }
+if ($queryEmail && ($result = mysqli_fetch_assoc($queryEmail)) && ($result['qtd'] > 0)) {
+  $erroEmailJaExiste = true;
+}
+
+$queryEmailSecEmail = mysqli_query($mysqli,
+  "SELECT COUNT(id) as qtd FROM usuario WHERE email='$emailSec'"
+);
+
+if ($queryEmailSecEmail && ($result = mysqli_fetch_assoc($queryEmailSecEmail)) && ($result['qtd'] > 0)) {
+$erroEmailSecJaExiste = true;
+}
+
+$queryEmailEmailSec = mysqli_query($mysqli,
+  "SELECT COUNT(id) as qtd FROM usuario WHERE emailSec='$email'"
+);
+
+if ($queryEmailEmailSec && ($result = mysqli_fetch_assoc($queryEmailEmailSec)) && ($result['qtd'] > 0)) {
+  $erroEmailJaExiste = true;
+}
+
+$queryEmailSecEmailSec = mysqli_query($mysqli,
+"SELECT COUNT(id) as qtd FROM usuario WHERE emailSec='$emailSec'"
+);
+
+if ($queryEmailSecEmailSec && ($result = mysqli_fetch_assoc($queryEmailSecEmailSec)) && ($result['qtd'] > 0)) {
+$erroEmailSecJaExiste = true;
+}
+
+if ($email == $emailSec){
+  $erroEmailsIguais = true;
+}
 
 
-  if (!$erroEmailJaExiste) {
+
+  if ((!$erroEmailJaExiste) && (!$erroEmailSecJaExiste) && (!$erroEmailsIguais)) {
     $query = mysqli_query($mysqli, 
       "INSERT INTO usuario (tipo, nome, emailSec, email, senha, id_token)
        VALUES ('1', '$nome', '$emailSec', '$email', '$senha', $id_token)"
@@ -110,6 +142,18 @@ if (($nome      != '') &&
           </div>
         <?php } ?>
 
+        <?php if ($erroEmailSecJaExiste) { ?>
+          <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+            <span>Email secundário já existe!</span>
+          </div>
+        <?php } ?>
+
+        <?php if ($erroEmailsIguais) { ?>
+          <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+            <span>Email e email secundário são iguais!</span>
+          </div>
+        <?php } ?>
+
         <?php if ($erroCamposObrigatorios) { ?>
           <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
             <span>Preencha todos os campos!</span>
@@ -139,7 +183,7 @@ if (($nome      != '') &&
         -->
         <div class="row mb-3">
           <div class="form-floating col-12">        
-            <input type="text" class="form-control" id="email" placeholder="email" name="email">
+            <input type="email" class="form-control" id="email" placeholder="email" name="email">
             <label for="email">E-mail</label>
           </div>
           &nbsp&nbsp
@@ -149,7 +193,7 @@ if (($nome      != '') &&
         -->
         <div class="row mb-3">
           <div class="form-floating col-12">        
-            <input type="text" class="form-control" id="emailSec" placeholder="emailSec" name="emailSec">
+            <input type="email" class="form-control" id="emailSec" placeholder="emailSec" name="emailSec">
             <label for="emailSec">E-mail alternativo</label>
           </div>
         </div>

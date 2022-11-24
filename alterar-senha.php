@@ -1,3 +1,16 @@
+<?php
+
+require_once('session-cliente.php');
+require_once('banco.php');
+
+
+
+
+
+?>
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -28,13 +41,27 @@
       &nbsp&nbsp
       <div class="container">
         <div class="row mb-3">
-          <div class="form-floating col-12">        
-            <input type="text" class="form-control" id="emailSec" placeholder="emailSec">
-            <label for="emailSec">E-mail secundário</label>
+          <div class="form-floating col">        
+            <input type="password" name="antigaSenha" class="form-control" id="senhaAntiga" placeholder="senhaAntiga">
+            <label for="senhaAntiga">Senha Antiga</label>
           </div>
           &nbsp&nbsp
         </div>
-      </div>
+        <div class="row mb-3">
+          <div class="form-floating col">        
+            <input type="password" name="senhaNova" class="form-control" id="senhaNova" placeholder="senhaNova">
+            <label for="senhaNova">Nova senha</label>
+          </div>
+          &nbsp&nbsp
+        </div>
+        <div class="row mb-3">
+          <div class="form-floating col">        
+            <input type="password" name="senhaNovaConfirma" class="form-control" id="senhaNovaConfirma" placeholder="senhaNovaConfirma">
+            <label for="senhaNovaConfirma">Confirme a nova senha</label>
+          </div>
+          &nbsp&nbsp
+        </div>
+        </div>
       <button class="w-100 btn btn-lg btn-success" type="submit">Confirmar</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     </form>
