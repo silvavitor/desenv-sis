@@ -91,8 +91,6 @@ if (array_key_exists("valor", $_POST)) {
     $referencia_ordem[$dados["distancia_objetivo"]][] = $acao;
   }
   ksort($referencia_ordem);
-  
-  // echo "<pre>";
 
   foreach ($referencia_ordem as $distancia => $ativos) {
     if ($distancia <= 0) {
@@ -111,12 +109,6 @@ if (array_key_exists("valor", $_POST)) {
       }
     }
   }
-
-  
-  // print_r($tabela);
-  // print_r($referencia_ordem);
-  // print_r($investimentos);
-  // echo "</pre>";
 }
 
 ?>
