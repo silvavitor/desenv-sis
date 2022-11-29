@@ -276,7 +276,7 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
 
     <script src="assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/dist/js/chart.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       function filtrarSegmento() {
         let filtro = document.getElementById("filtro");
