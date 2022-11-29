@@ -1,8 +1,59 @@
 <?php
-require_once('session-cliente.php');
+require_once('session.php');
 require_once('banco.php');
 
-$id_cliente = $_SESSION['id'];
+$tipo_usuario = $_SESSION["tipo_usuario"];
+
+if (!array_key_exists("id", $_GET)) {
+  if ($tipo_usuario == 1) {
+    header('location: home.php');
+  }
+  
+  if ($tipo_usuario == 2) {
+    header('location: list-clientes.php');
+  }
+}
+
+$id_carteira = $_GET["id"];
+
+// Se for cliente, verifica se essa carteira percence a ele
+if ($tipo_usuario == 1) {
+  $id_cliente = $_SESSION['id'];
+
+  $queryCarteira = mysqli_query($mysqli,
+    "SELECT * FROM carteira WHERE id='$id_carteira'"
+  );
+
+  if ($queryCarteira && ($result = mysqli_fetch_assoc($queryCarteira)) && (mysqli_num_rows($queryCarteira) > 0)) {
+    if ($result["id_cliente"] != $id_cliente) {
+      header('location: home.php');
+    }
+  } else {
+    header('location: home.php');
+  }
+
+}
+
+// Se for analista, verifica se essa carteira é de algum cliente dele
+if ($tipo_usuario == 2) {
+  $id_analista = $_SESSION['id'];
+  $queryAnalista = mysqli_query($mysqli,
+    "SELECT 
+      id 
+    FROM 
+      usuario 
+    WHERE 
+      id_token in (SELECT id from token WHERE id_analista=$id_analista) AND
+      id in (SELECT id_cliente FROM carteira WHERE id=$id_carteira)"
+  );
+
+  if ($queryAnalista && ($result = mysqli_fetch_assoc($queryAnalista)) && (mysqli_num_rows($queryAnalista) > 0)) {
+    $id_cliente = $result['id'];
+  } else {
+    header('location: list-clientes.php');
+  }
+}
+
 $patrimonio_total = 0;
 $investimentos = [];
 $valor = 0;
@@ -150,25 +201,30 @@ if (array_key_exists("valor", $_POST)) {
           </div>
         </div>
     </form>
-    <form action="aplicar-investimento.php?id=<?=$id_carteira?>" method="post">
-      <?php foreach ($investimentos as $investimento) { ?>
-        <div class="row mb-3">
-          <div class="form-floating col">        
-            <input type="text" class="form-control" value="<?=$investimento['ativo']?>" name="ativos[]" readonly>
-            <label>Ação</label>
-            <input type="hidden" value="<?=$investimento['id_acao']?>" name="acoes[]">
+
+    <?php if ($valor_cheio <> '') { ?>
+      <form action="aplicar-investimento.php?id=<?=$id_carteira?>" method="post">
+        <?php foreach ($investimentos as $investimento) { ?>
+          <div class="row mb-3">
+            <div class="form-floating col">        
+              <input type="text" class="form-control" value="<?=$investimento['ativo']?>" name="ativos[]" readonly>
+              <label>Ação</label>
+              <input type="hidden" value="<?=$investimento['id_acao']?>" name="acoes[]">
+            </div>
+            <div class="col-2"></div>
+            <div class="form-floating col">        
+              <input type="text" class="form-control" value="<?=$investimento['qtd']?>" name="qtds[]" readonly>
+              <label>Quantidade</label>
+            </div>
           </div>
-          <div class="col-2"></div>
-          <div class="form-floating col">        
-            <input type="text" class="form-control" value="<?=$investimento['qtd']?>" name="qtds[]" readonly>
-            <label>Quantidade</label>
-          </div>
-        </div>
-      <?php } ?>
-      <div class="form-floating">        
-        <button class="w-100 h-100 btn btn-lg btn-success" type="submit">Aplicar Investimento</button>
-      </div>
-    </form>
+        <?php } 
+          if ($tipo_usuario == 1) { ?>
+            <div class="form-floating">        
+              <button class="w-100 h-100 btn btn-lg btn-success" type="submit">Aplicar Investimento</button>
+            </div>
+        <?php } ?>
+      </form>
+    <?php } ?>
 
     <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     

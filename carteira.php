@@ -210,21 +210,21 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
             <canvas id="graficoAtivos"></canvas>
           </div>
           <!-- Investimento, Add operação e histórico de operações -->
-          <?php if ($tipo_usuario == 1) { ?>
-            <div class="col interacoesContainer">
-              <div class="interacoes mt-4">
-                <div class="mb-4">
-                  <a href="investimento.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar investimento</button></a>
-                </div>
+          <div class="col interacoesContainer">
+            <div class="interacoes mt-4">
+              <div class="mb-4">
+                <a href="investimento.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar investimento</button></a>
+              </div>
+              <?php if ($tipo_usuario == 1) { ?>
                 <div class="mb-4">
                   <a href="add-operacao.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Adicionar operação</button></a>
                 </div>
                 <div class="mb-4">
                   <a href="historico-operacoes.php?id=<?=$id_carteira?>" class="me-3"><button class="w-100 btn btn-lg btn-primary" type="submit">Histórico de operações</button></a>
                 </div>
-              </div>
+              <?php } ?>
             </div>
-          <?php } ?>
+          </div>
         </div>
       </div>
 
@@ -311,7 +311,6 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
         }]
       };
 
-      console.log(data);
       new Chart(ctx, {
         type: 'pie',
         data: data,

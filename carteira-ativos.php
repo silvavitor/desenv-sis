@@ -158,7 +158,6 @@ if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_P
         listaEscolhidos.forEach(escolhido => {
           adicionarAtivo(escolhido.acao, escolhido.porcentagem_objetivo);
         });
-        console.log(data);
       })
       .catch((error) => {
         console.error(error);
