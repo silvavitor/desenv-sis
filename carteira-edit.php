@@ -17,7 +17,7 @@ if (array_key_exists("id", $_GET)) {
     header('location: home.php');
   }
 } else {
-  header("location: carteira.php?id=$id_carteira");
+  header("location: home.php");
 }
 
 if (array_key_exists("descricao", $_POST)){

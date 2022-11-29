@@ -23,9 +23,6 @@ $erroExistente = false;
 if (array_key_exists("id", $_GET)) {
   $id_carteira = $_GET['id'];
 
-  // Verifica se a carteira é do cliente
-  $id_cliente = $_SESSION['id'];
-
   $queryCarteira = mysqli_query($mysqli,
     "SELECT * FROM carteira WHERE id='$id_carteira'"
   );

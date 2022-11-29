@@ -13,8 +13,18 @@ $erroExistente = false;
 
 if (array_key_exists("id", $_GET)) {
   $id_carteira = $_GET['id'];
-} else {
-  header('location: home.php');
+
+  $queryCarteira = mysqli_query($mysqli,
+    "SELECT * FROM carteira WHERE id='$id_carteira'"
+  );
+
+  if ($queryCarteira && ($result = mysqli_fetch_assoc($queryCarteira)) && (mysqli_num_rows($queryCarteira) > 0)) {
+    if ($result["id_cliente"] != $id_cliente) {
+      header('location: home.php');
+    }
+  } else {
+    header('location: home.php');
+  }
 }
 
 if ((array_key_exists("porcentagem", $_POST)) and (array_key_exists("acoes", $_POST))) {

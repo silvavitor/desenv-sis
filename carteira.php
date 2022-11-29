@@ -97,6 +97,10 @@ $segmento = [];
 $patrimonio_total = 0;
 $filtro = '';
 
+if (array_key_exists("segmento", $_GET)) {
+  $filtro = urldecode($_GET["segmento"]);
+}
+
 $queryAcoes = mysqli_query($mysqli,
   "SELECT 
     ca.*, a.segmento
@@ -107,10 +111,6 @@ $queryAcoes = mysqli_query($mysqli,
   ORDER BY
     ca.acao"
 );
-
-if (array_key_exists("segmento", $_GET)) {
-  $filtro = urldecode($_GET["segmento"]);
-}
 
 while (($acao = mysqli_fetch_assoc($queryAcoes))) {
   ////////////////////////////////////////////////////////////////////

@@ -1,3 +1,84 @@
+<?php
+require_once('session-cliente.php');
+require_once('banco.php');
+
+$id_cliente = $_SESSION['id'];
+
+if (array_key_exists("id", $_GET)) {
+  $id_carteira = $_GET['id'];
+
+  $queryCarteira = mysqli_query($mysqli,
+    "SELECT * FROM carteira WHERE id='$id_carteira'"
+  );
+
+  if ($queryCarteira && ($result = mysqli_fetch_assoc($queryCarteira)) && (mysqli_num_rows($queryCarteira) > 0)) {
+    if ($result["id_cliente"] != $id_cliente) {
+      header('location: home.php');
+    }
+  } else {
+    header('location: home.php');
+  }
+}
+
+
+if (array_key_exists("valor", $_POST)) {
+  $valor = $_POST["valor"];
+
+  $queryAcoes = mysqli_query($mysqli,
+    "SELECT 
+      ca.*, a.segmento
+    FROM 
+      carteira_acoes ca, acoes a
+    WHERE 
+      id_carteira = $id_carteira AND a.papel = ca.acao
+    ORDER BY
+      ca.acao"
+  );
+
+  while (($acao = mysqli_fetch_assoc($queryAcoes))) {
+    ////////////////////////////////////////////////////////////////////
+    // Consulta a API
+    ////////////////////////////////////////////////////////////////////
+    $ativo = $acao["acao"];
+    $url  = 'https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol='.$ativo;
+    $ch   = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    $preco = json_decode($result)->results->$ativo->price;
+
+    if (($filtro == '') or ($filtro == $acao["segmento"])) {
+      $tabela[$acao['acao']] = [
+        "qtd"                => $acao["quantidade"],
+        "cotacao_atual"      => $preco,
+        "patrimonio"         => $acao["quantidade"] * $preco,
+        "participacao"       => 0,
+        "objetivo"           => $acao["porcentagem_objetivo"],
+        "distancia_objetivo" => 0,
+      ];
+    }
+
+    $patrimonio_total += $acao["quantidade"] * $preco;
+  } 
+
+  foreach ($tabela as $acao => $dados) {
+    if ($patrimonio_total > 0) {
+      $participacao = (100 * $dados["patrimonio"]) / $patrimonio_total;
+    } else {
+      $participacao = 0;
+    }
+  
+    $distancia = $participacao - $dados["objetivo"];
+  
+    $tabela[$acao]["participacao"] = $participacao;
+    $tabela[$acao]["distancia_objetivo"] = $distancia;
+  } 
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -22,11 +103,11 @@
   <?php include_once('header.php'); ?>  
     
 <main class="form-signin w-100 m-auto">
-  <form>
+  <form action="investimento.php" method="post">
     <div class="container">
       <div class="row mb-5 mt-3">
         <div class="form-floating col-8">        
-          <input type="text" class="form-control" id="valor" placeholder="Valor">
+          <input type="text" class="form-control" id="valor" placeholder="Valor" name="valor">
           <label for="valor">Valor</label>
         </div>
         <div class="col-1"></div>
@@ -34,52 +115,22 @@
           <button class="w-100 h-100 btn btn-lg btn-success" type="submit">Calcular</button>
         </div>
       </div>
+  </form>
 
-      <!-- 
-        Ação 1
-      -->
-      <div class="row mb-3">
-        <div class="form-floating  col">        
-          <input type="text" class="form-control" id="acao1" value="petr4" placeholder="acao1" readonly>
-          <label for="acao1">Ação 1</label>
-        </div>
-        <div class="col-2"></div>
-        <div class="form-floating col">        
-          <input type="text" class="form-control" id="porcentagem1" value="20%" placeholder="porcentagem1" readonly>
-          <label for="porcentagem1">Porcentagem alvo</label>
-        </div>
-      </div>
-      <!-- 
-        Ação 2
-      -->
-      <div class="row mb-3">
-        <div class="form-floating  col">        
-          <input type="text" class="form-control" id="acao2" value="petr4" placeholder="acao2" readonly>
-          <label for="acao2">Ação 2</label>
-        </div>
-        <div class="col-2"></div>
-        <div class="form-floating col">        
-          <input type="text" class="form-control" id="porcentagem2" value="30%" placeholder="porcentagem2" readonly>
-          <label for="porcentagem2">Porcentagem alvo</label>
-        </div>
-      </div>
-      <!-- 
-        Ação 3
-      -->
-      <div class="row mb-3">
-        <div class="form-floating  col-5">        
-          <input type="text" class="form-control" id="acao3" value="petr4" placeholder="acao3" readonly>
-          <label for="acao3">Ação 3</label>
-        </div>
-        <div class="col-2"></div>
-        <div class="form-floating col-5">        
-          <input type="text" class="form-control" id="porcentagem3" value="50%" placeholder="porcentagem3" readonly>
-          <label for="porcentagem3">Porcentagem alvo</label>
-        </div>
-      </div>
+  <div class="row mb-3">
+    <div class="form-floating  col">        
+      <input type="text" class="form-control" id="acao1" value="petr4" placeholder="acao1" readonly>
+      <label for="acao1">Ação 1</label>
+    </div>
+    <div class="col-2"></div>
+    <div class="form-floating col">        
+      <input type="text" class="form-control" id="porcentagem1" value="20%" placeholder="porcentagem1" readonly>
+      <label for="porcentagem1">Porcentagem alvo</label>
+    </div>
+  </div>
 
     <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
-  </form>
+  
 </main>
 
 
