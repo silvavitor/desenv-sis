@@ -119,7 +119,7 @@ while (($acao = mysqli_fetch_assoc($queryAcoes))) {
   // Consulta a API
   ////////////////////////////////////////////////////////////////////
   $ativo = $acao["acao"];
-  $url  = 'https://api.hgbrasil.com/finance/stock_price?key=20d1b194&symbol='.$ativo;
+  $url  = 'https://brapi.dev/api/quote/'.$ativo;
   $ch   = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -127,12 +127,12 @@ while (($acao = mysqli_fetch_assoc($queryAcoes))) {
   curl_close($ch);
   $result = json_decode($exec);
 
-  if ($result->results->error) {
+  if (property_exists($result, 'error')) {
     $preco = 1;
     $erroApi = true;
-    $erroApiText = $result->results->message;
+    $erroApiText = $result->error;
   } else {
-    $preco = $result->results->$ativo->price;
+    $preco = $result->results[0]->regularMarketPrice;
   }
 
 

@@ -15,6 +15,9 @@ if (!array_key_exists("id", $_GET)) {
 }
 
 $id_carteira = $_GET["id"];
+$erroApi = false;
+$erroApiText = 'teste';
+
 
 // Se for cliente, verifica se essa carteira percence a ele
 if ($tipo_usuario == 1) {
@@ -97,14 +100,21 @@ if (array_key_exists("valor", $_POST)) {
     // Consulta a API
     ////////////////////////////////////////////////////////////////////
     $ativo = $acao["acao"];
-    $url  = 'https://api.hgbrasil.com/finance/stock_price?key=20d1b194&symbol='.$ativo;
+    $url  = 'https://brapi.dev/api/quote/'.$ativo;
     $ch   = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $result = curl_exec($ch);
+    $exec = curl_exec($ch);
     curl_close($ch);
+    $result = json_decode($exec);
 
-    $preco = json_decode($result)->results->$ativo->price;
+    if (property_exists($result, 'error')) {
+      $preco = 1;
+      $erroApi = true;
+      $erroApiText = $result->error;
+    } else {
+      $preco = $result->results[0]->regularMarketPrice;
+    }
 
     $tabela[$acao['acao']] = [
       "id_acao"            => $acao['id'],
@@ -201,6 +211,12 @@ if (array_key_exists("valor", $_POST)) {
           </div>
         </div>
     </form>
+
+    <?php if ($erroApi) { ?>
+      <div class="p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+        <span>Erro na API: <?=$erroApiText?></span>
+      </div>
+    <?php } ?>
 
     <?php if ($valor_cheio <> '') { ?>
       <form action="aplicar-investimento.php?id=<?=$id_carteira?>" method="post">
