@@ -97,7 +97,7 @@ if (array_key_exists("valor", $_POST)) {
     // Consulta a API
     ////////////////////////////////////////////////////////////////////
     $ativo = $acao["acao"];
-    $url  = 'https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol='.$ativo;
+    $url  = 'https://api.hgbrasil.com/finance/stock_price?key=20d1b194&symbol='.$ativo;
     $ch   = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

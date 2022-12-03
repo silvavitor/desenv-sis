@@ -96,6 +96,8 @@ $tabela = [];
 $segmento = [];
 $patrimonio_total = 0;
 $filtro = '';
+$erroApi = false;
+$erroApiText = '';
 
 if (array_key_exists("segmento", $_GET)) {
   $filtro = urldecode($_GET["segmento"]);
@@ -117,14 +119,22 @@ while (($acao = mysqli_fetch_assoc($queryAcoes))) {
   // Consulta a API
   ////////////////////////////////////////////////////////////////////
   $ativo = $acao["acao"];
-  $url  = 'https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol='.$ativo;
+  $url  = 'https://api.hgbrasil.com/finance/stock_price?key=20d1b194&symbol='.$ativo;
   $ch   = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  $result = curl_exec($ch);
+  $exec = curl_exec($ch);
   curl_close($ch);
+  $result = json_decode($exec);
 
-  $preco = json_decode($result)->results->$ativo->price;
+  if ($result->results->error) {
+    $preco = 1;
+    $erroApi = true;
+    $erroApiText = $result->results->message;
+  } else {
+    $preco = $result->results->$ativo->price;
+  }
+
 
   if (($filtro == '') or ($filtro == $acao["segmento"])) {
     $tabela[$acao['acao']] = [
@@ -204,6 +214,15 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
       </div>
 
       <div class="w-100 row">
+        <?php if ($erroApi) { ?>
+          <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4 p-3 text-white bg-danger bg-gradient rounded-3 mb-2">
+              <span>Erro na API: <?=$erroApiText?></span>
+            </div>
+            <div class="col-4"></div>
+          </div> 
+        <?php } ?>
         <div class="h-100 p-5 row">
           <!-- Gráfico -->
           <div class="col graficoContainer">

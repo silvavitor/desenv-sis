@@ -1,9 +1,9 @@
-4cff688a
-https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol=embr3
+20d1b194
+https://api.hgbrasil.com/finance/stock_price?key=20d1b194&symbol=embr3
 
 
 
-$url  = 'https://api.hgbrasil.com/finance/stock_price?key=4cff688a&symbol=PETR4';
+$url  = 'https://api.hgbrasil.com/finance/stock_price?key=20d1b194&symbol=PETR4';
 $ch   = curl_init();
 
 curl_setopt($ch, CURLOPT_URL, $url);
