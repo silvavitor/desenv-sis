@@ -181,11 +181,13 @@ if (array_key_exists("valor", $_POST)) {
             $qtdIndicada = floor($valor/$cotacao);
           }
           $valor -= ($qtdIndicada * $cotacao);
-          $investimentos[$ativo] = [
-            "id_acao" => $tabela[$ativo]["id_acao"],
-            "ativo"   => $ativo,
-            "qtd"     => $qtdIndicada
-          ];
+          if ($qtdIndicada > 0) {
+            $investimentos[$ativo] = [
+              "id_acao" => $tabela[$ativo]["id_acao"],
+              "ativo"   => $ativo,
+              "qtd"     => $qtdIndicada
+            ];
+          }
         }
       }
     }
@@ -240,7 +242,13 @@ if (array_key_exists("valor", $_POST)) {
 
     <?php if ($valor_cheio <> '') { ?>
       <form action="aplicar-investimento.php?id=<?=$id_carteira?>" method="post">
-        <?php foreach ($investimentos as $investimento) { ?>
+        <?php 
+        if (sizeof($investimentos) == 0) { ?>
+          <div class="p-3 bg-warning bg-gradient rounded-3 mb-2">
+            <span>Não há nenhuma recomendação para este valor!</span>
+          </div>
+        <?php }
+        foreach ($investimentos as $investimento) { ?>
           <div class="row mb-3">
             <div class="form-floating col">        
               <input type="text" class="form-control" value="<?=$investimento['ativo']?>" name="ativos[]" readonly>
@@ -254,7 +262,7 @@ if (array_key_exists("valor", $_POST)) {
             </div>
           </div>
         <?php } 
-          if ($tipo_usuario == 1) { ?>
+          if (($tipo_usuario == 1) && (sizeof($investimentos) > 0)) { ?>
             <div class="form-floating">        
               <button class="w-100 h-100 btn btn-lg btn-success" type="submit">Aplicar Investimento</button>
             </div>
