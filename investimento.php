@@ -81,7 +81,7 @@ if (array_key_exists("id", $_GET)) {
 }
 
 if (array_key_exists("valor", $_POST)) {
-  $valor = $_POST["valor"];
+  $valor = (float)str_replace([",", "."], "", $_POST["valor"]) ;
   $valor_cheio = $valor;
 
   $queryAcoes = mysqli_query($mysqli,
@@ -115,20 +115,22 @@ if (array_key_exists("valor", $_POST)) {
     } else {
       $preco = $result->results[0]->regularMarketPrice;
     }
+    
+    $patrimonio = $acao["quantidade"] * $preco;
 
     $tabela[$acao['acao']] = [
       "id_acao"            => $acao['id'],
       "acao"               => $ativo,
       "qtd"                => $acao["quantidade"],
       "cotacao_atual"      => $preco,
-      "patrimonio"         => $acao["quantidade"] * $preco,
+      "patrimonio"         => $patrimonio,
       "participacao"       => 0,
       "objetivo"           => $acao["porcentagem_objetivo"],
       "distancia_objetivo" => 0,
       "distancia_qtd"      => 0,
     ];
 
-    $patrimonio_total += $acao["quantidade"] * $preco;
+    $patrimonio_total += $patrimonio;
   } 
 
   $patrimonio_total += $valor;
@@ -141,32 +143,50 @@ if (array_key_exists("valor", $_POST)) {
     }
   
     $distancia = $participacao - $dados["objetivo"];
+
+    $distancia_qtd = (($patrimonio_total * ($dados['objetivo'] / 100)) - $dados['patrimonio']) / $dados['cotacao_atual'];
+    if ($distancia_qtd >= 0) {
+      $distancia_qtd = floor($distancia_qtd);
+    } else {
+      $distancia_qtd = ceil($distancia_qtd);
+    }
   
     $tabela[$acao]["participacao"] = $participacao;
     $tabela[$acao]["distancia_objetivo"] = $distancia;
-    $tabela[$acao]["distancia_qtd"] = floor((($patrimonio_total * ($dados['objetivo'] / 100)) - $dados['patrimonio']) / $dados['cotacao_atual']);
+    $tabela[$acao]["distancia_qtd"] = (int)$distancia_qtd;
   }
+  // echo "<pre>";
 
   $referencia_ordem = [];
   foreach ($tabela as $acao => $dados) {
-    $referencia_ordem[$dados["distancia_objetivo"]][] = $acao;
+    $referencia_ordem[$dados["distancia_objetivo"]][] = [
+      "acao" => $acao,
+      "distancia_objetivo" => $dados["distancia_objetivo"]
+    ];
   }
   ksort($referencia_ordem);
 
+  // print_r($tabela);
+  // print_r($referencia_ordem);
+  // die;
+
   foreach ($referencia_ordem as $distancia => $ativos) {
     if ($distancia <= 0) {
-      foreach ($ativos as $ativo) {
-        $qtdIndicada = $tabela[$ativo]["distancia_qtd"];
-        $cotacao     = $tabela[$ativo]["cotacao_atual"];
-        if (($qtdIndicada * $cotacao) > $valor) {
-          $qtdIndicada = floor($valor/$cotacao);
+      foreach ($ativos as $info_ativo) {
+        if ($info_ativo['distancia_objetivo'] < 0) {
+          $ativo = $info_ativo['acao'];
+          $qtdIndicada = $tabela[$ativo]["distancia_qtd"];
+          $cotacao     = $tabela[$ativo]["cotacao_atual"];
+          if (($qtdIndicada * $cotacao) > $valor) {
+            $qtdIndicada = floor($valor/$cotacao);
+          }
+          $valor -= ($qtdIndicada * $cotacao);
+          $investimentos[$ativo] = [
+            "id_acao" => $tabela[$ativo]["id_acao"],
+            "ativo"   => $ativo,
+            "qtd"     => $qtdIndicada
+          ];
         }
-        $valor -= ($qtdIndicada * $cotacao);
-        $investimentos[$ativo] = [
-          "id_acao" => $tabela[$ativo]["id_acao"],
-          "ativo"   => $ativo,
-          "qtd"     => $qtdIndicada
-        ];
       }
     }
   }
@@ -240,7 +260,10 @@ if (array_key_exists("valor", $_POST)) {
             </div>
         <?php } ?>
       </form>
-    <?php } ?>
+      <?php } ?>
+      <div class="form-floating">        
+        <a href="carteira.php?id=<?=$id_carteira?>"class="mt-3 w-100 h-100 btn btn-lg btn-success">Voltar</a>
+      </div>
 
     <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     

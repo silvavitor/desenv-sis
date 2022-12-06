@@ -35,38 +35,42 @@ if ((array_key_exists("lado", $_POST)) &&
   $acao       = $_POST["acao"];
   $quantidade = $_POST["quantidade"];
 
-  if ($lado == 2) {
-   
-    $queryQtd = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira = $id_carteira and id=$acao");  
+  if ($quantidade > 0) {
+    if ($lado == 2) {
     
-    if ($queryQtd && (mysqli_num_rows($queryQtd) > 0) && ($result = mysqli_fetch_assoc($queryQtd))) {
-      if ($result['quantidade'] < $quantidade) {
-          $erroQuantidade = true;
+      $queryQtd = mysqli_query($mysqli, "SELECT * FROM carteira_acoes WHERE id_carteira = $id_carteira and id=$acao");  
+      
+      if ($queryQtd && (mysqli_num_rows($queryQtd) > 0) && ($result = mysqli_fetch_assoc($queryQtd))) {
+        if ($result['quantidade'] < $quantidade) {
+            $erroQuantidade = true;
+          }
         }
-      }
-    $quantidade = -$quantidade;
-  } 
+      $quantidade = -$quantidade;
+    } 
 
-  if (!$erroQuantidade) {
+    if (!$erroQuantidade) {
 
-    $query = mysqli_query($mysqli, 
-        "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade, data)
-         VALUES ('$id_carteira', '$acao', '$lado', '$quantidade', NOW())"
-      );
-  
+      $query = mysqli_query($mysqli, 
+          "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade, data)
+          VALUES ('$id_carteira', '$acao', '$lado', '$quantidade', NOW())"
+        );
     
-  
-    $queryQuantidade = mysqli_query($mysqli, 
-      "UPDATE carteira_acoes 
-       SET quantidade=(quantidade + $quantidade)
-       WHERE id=$acao"
-    );
-  
-    if (($query) and ($queryQuantidade)) {
-      header("location: carteira.php?id=" . $id_carteira);
-    } else {
-      header('location: home.php');
+      
+    
+      $queryQuantidade = mysqli_query($mysqli, 
+        "UPDATE carteira_acoes 
+        SET quantidade=(quantidade + $quantidade)
+        WHERE id=$acao"
+      );
+    
+      if (($query) and ($queryQuantidade)) {
+        header("location: carteira.php?id=" . $id_carteira);
+      } else {
+        header('location: home.php');
+      }
     }
+  } else {
+    $erroQuantidade = true;
   }
 }
 ?>
@@ -147,6 +151,9 @@ if ((array_key_exists("lado", $_POST)) &&
       <?php if (!$erroSemAcao) { ?>
         <button class="w-100 btn btn-lg btn-success" type="submit">Confirmar</button>
       <?php } ?>
+      <div class="form-floating">        
+        <a href="carteira.php?id=<?=$id_carteira?>"class="mt-3 w-100 h-100 btn btn-lg btn-success">Voltar</a>
+      </div>
       <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
     </form>
   </main>

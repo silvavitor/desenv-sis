@@ -32,23 +32,20 @@ if ((array_key_exists("acoes", $_POST)) && (array_key_exists("qtds", $_POST)) &&
     $acao = $ativos[$i];
     $qtd = $qtds[$i];
 
-    $query = mysqli_query($mysqli, 
-        "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade, data)
-         VALUES ('$id_carteira', '$id_acao', '1', '$qtd', NOW())"
+    if ($qtd > 0) { 
+      $query = mysqli_query($mysqli, 
+          "INSERT INTO operacoes (id_carteira, id_acao, lado, quantidade, data)
+           VALUES ('$id_carteira', '$id_acao', '1', '$qtd', NOW())"
+        );
+    
+      $queryQuantidade = mysqli_query($mysqli, 
+        "UPDATE carteira_acoes 
+         SET quantidade=(quantidade + $qtd)
+         WHERE acao='$acao'"
       );
-  
-    $queryQuantidade = mysqli_query($mysqli, 
-      "UPDATE carteira_acoes 
-       SET quantidade=(quantidade + $qtd)
-       WHERE acao='$acao'"
-    );
-  
-    if (($query) and ($queryQuantidade)) {
-      header("location: carteira.php?id=" . $id_carteira);
-    } else {
-      header('location: home.php');
     }
   }
+  header("location: carteira.php?id=" . $id_carteira);
 } else {
   header("location: investimento.php?id=$id_carteira");
 }
