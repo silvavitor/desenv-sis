@@ -81,7 +81,7 @@ if (array_key_exists("id", $_GET)) {
 }
 
 if (array_key_exists("valor", $_POST)) {
-  $valor = (float)str_replace([",", "."], "", $_POST["valor"]) ;
+  $valor = (float)str_replace(",", ".", $_POST["valor"]) ;
   $valor_cheio = $valor;
 
   $queryAcoes = mysqli_query($mysqli,
