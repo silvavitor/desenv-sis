@@ -773,12 +773,12 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `tipo`, `nome`, `emailSec`, `email`, `senha`, `id_token`) VALUES
-(1, 1, '', 'teste', 'a@a.com', '1234', 1),
-(3, 2, '', 'analista', 'analista@teste.com', '123', 0),
-(4, 1, '', 'teste', 'teste@teste.com', 'teste', 2),
+(1, 1, 'Teste', 'teste', 'a@a.com', '1234', 1),
+(3, 2, 'Analista', 'analista', 'analista@teste.com', '123', 0),
+(4, 1, 'test', 'teste', 'teste@teste.com', 'teste', 2),
 (5, 1, 'giovani', 'h@h.com', 'g@g.com', '123', 3),
 (6, 1, 'teste de campos', 'g@ggg.com', 'teste@123.com', 'teste', 4),
-(7, 1, 'teste FInal', 'teste2@final2.com', 'teste@final.com', 'teste', 5);
+(7, 1, 'teeeeasdasdasdasdasd', 'tete@tete.com', 'teeee@teeee.com', 'teste', 5);
 
 --
 -- Índices para tabelas despejadas

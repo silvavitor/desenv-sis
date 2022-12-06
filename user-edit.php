@@ -1,6 +1,6 @@
 <?php
 
-require_once('session-cliente.php');
+require_once('session.php');
 require_once('banco.php');
 
 $erroCamposObrigatorios = false;
