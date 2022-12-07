@@ -318,13 +318,13 @@ while (($consulta = mysqli_fetch_assoc($querySegmentos))) {
       }
       const participacaoHTML = document.getElementsByClassName('participacao');
       for (let participacao of participacaoHTML) {
-        participacoes.push(parseFloat(participacao.innerHTML.replace("%", "")));
+        participacoes.push(parseFloat(participacao.innerHTML.replace("%", "").replace(",", ".")));
       }
 
       const data = {
         labels: ativos,
         datasets: [{
-          label: 'Ativos',
+          label: 'Porcentagem',
           data: participacoes,
           hoverOffset: 4
         }]
